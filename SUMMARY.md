@@ -21,4 +21,5 @@
    * [3.7扩展NodeList](Book/3DOMBasics/3-7nodelistExtensions.md)
 * [4Dojo基础](Book/4Fundamentals/4Fundamentals.md)
    * [4.1dojo/request和Ajax](Book/4Fundamentals/4-1ajaxWithDojo_request.md)
+   * 4.2数组
 
