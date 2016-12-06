@@ -21,4 +21,77 @@ Dojo的build系统是综合和可高度定制化的。它还可以进行扩展�
  Dojo内部有许多可以在应用中利用的配置选项。这些配置信息不仅对于你应用的正确运行很重要，在build应用时也可能需要提供这些配置信息作为build过程的一部分。如果你不熟悉如何配置Dojo，你需要复习[Configuring Dojo with dojoConfig](https://dojotoolkit.org/documentation/tutorials/1.10/dojo_config/) 教程。
 
 ### Layers
-layer本质上是一个单独JavaScript文件，它一般会包含几个模块，有时也包含其它资源。build的主要输出通常是一个layer，创建这个文件然后让你应用变得可分配。一个layer可以是一个引导layer，它包含Dojo的引导代码可以让Dojo加载其它模块。你需要什么layer以及它们的内容都由你的应用和设计来决定。这不一定有一个“正确”的方式。
+layer本质上是一个单独JavaScript文件，它一般会包含几个模块，有时还有其它资源。一个layer通常build的主要输出，创建这个文件然后成为你应用的可分配之处。一个layer可以是一个引导layer，它包含Dojo的引导代码可以让Dojo加载其它模块。你需要什么layer以及它们的内容都由你的应用和设计来决定。不一定有一个“正确”的方式。
+
+### build配置文件
+build配置文件是一个给builder提供代码处理相关信息的很小的JavaScript文件。在就的build系统中，你可能有一个配置文件，它包含了所有你需要的东西放在`util/buildscripts/profiles`目录。Dojo1.7以后，它变得高度分散，每个包都有塔自己的build配置文件，然后你还有一个主build配置文件，它指导package和layer的builder，也提供用来优化代码的配置选项。
+
+### 压缩
+这个概念是关于在不改变代码功能的前提下获取和压缩JavaScript代码。从效率的角度看它很强大并且一些开发者喜欢它让代码变的模糊，但是它让调试变得困难。这将是你不愿对“build”过的代码做开发的原因之一。Dojo Builder利用两个工具集进行压缩。第一个是ShrinkSafe，只有它能够用在1.7之前、1.7及之后的builder里。builder还可以利用Google的 [Closure Compiler](https://developers.google.com/closure/compiler/)。
+
+### 废代码路径的移除
+Google Closure Compiler的优点在于它能检测到不可访问的代码，并在文件的压缩版里将它移除。几年前，我们启动了一个名叫Dojo Linker的项目来解决相似的问题，但一直没有时间完成它，所以很高兴有一个替代方案。Dojo Builder设计的时候考虑到了这个特性。在build时可以设置几个“旋钮”来让builder输出代码的路径上“硬编码”，随后在优化时，Closure Compiler检测到某些代码一直访问不到，就会在压缩文件里将它们移除。
+
+### Build Controls, Transforms and Resolvers
+这些是build系统里的基础build模块。通常你不需要用到它们，不过如果你对高级build感兴趣，可以通过修改它们来做一些有趣的事。build control是build“指令”的设置，它读取配置文件并确定使用哪种 transform 和 resolver。transform 如字面意思一样，用于对某些事物进行转换，resolver是用来在build 时对AMD插件模块进行解析。例如，当你在用`dojo/text`了加载一个widget模板时，build时插件解析会读取这个文本并将它内联到压缩文件里。
+
+##你需要的
+使用Dojo build系统，你必须有一个[full Dojo SDK](https://dojotoolkit.org/download/#sdk)副本。Dojo的“标准发行版”已经用build系统build过了。build工具本身依赖于Java（可选，Node.js用在更快的build），所以确认下你已经安装了它。
+
+##布置你的应用
+这是最大的挑战之一，尤其是当你已经超越了非常基础的应用。我们已经注意到许多从Dojo1.6和更早版本迁移过来的人，他们设计了我们预期之外非常奇怪的应用结构。这就是说许多人在将他们的build迁移到Dojo 1.7及之后版本时遇到了挑战。所以在你的应用偏离之前，你需要考虑如何布置它们。
+形式上需要一个`src`目录，所有你的包都要放在这个根目录下。通常你需要像这样：
+![](4.4file_list.png)
+Dojo的主体包（`dojo`、`dijit`和`dojox`）和其它包并列，包括你的自定义包，在加上Dojo实用工具（`util`）。
+
+如果你不想从头开始， [Dojo Boilerplate](https://github.com/csnover/dojo-boilerplate)包含了你起步所需的一切，不仅有基本应用程序的布局，而且已经为build进行了配置。
+
+##包
+为了用build系统来创建一个build，你的主应用包目录里必须包含两个文件。第一个是 [CommonJS Packages/1.0](http://wiki.commonjs.org/wiki/Packages/1.0)  包描述，它通常命名为`package.json`，放在包根目录下。第二个文件是一个build配置文件，它包含了如何用build工具处理包目录的相关信息。这个文件的命名有两个主要约定。在Dojo Toolkit里它叫做`<package name>.profile.js`，放在包的根目录下。另一个约定是将配置文件命名为`package.js`放在包的根目录下。你会在 [Dojo Foundation Packages](http://packages.dojofoundation.org/)看到这种约定。
+
+通常，你会只有一个包来内含你全部的应用，但是如果你已经把你的代码分解到多个包里（例如，在不同的包里使用shared/common模块），你需要对每个包都创建这些文件。
+
+
+##包描述 
+包描述文件(package.json)提供当前包的信息，例如包的名字、它依赖包的信息、许可的链接和bug追踪信息等。鉴于Dojo build系统的目的，真正重要的是一个特殊键`dojoBuild`，尽管它通常只提供一个名称、版本和描述。`dojoBuild`键用来指向包的build配置文件。给出一个名为`app`的包作为例子，一个基础`package.json`像下面这样：
+```
+{
+    "name": "app",
+    "description": "My Application.",
+    "version": "1.0",
+    "keywords": ["JavaScript", "Dojo", "Toolkit", "DojoX"],
+    "maintainers": [{
+        "name": "Kitson Kelly"
+    }],
+    "contributors": [{
+        "name": "Kitson Kelly"
+    },{
+        "name": "Colin Snover"
+    }],
+    "licenses": [{
+        "type": "AFLv2.1",
+        "url": "http://bugs.dojotoolkit.org/browser/dojox/trunk/LICENSE#L43"
+    },{
+        "type": "BSD",
+        "url": "http://bugs.dojotoolkit.org/browser/dojox/trunk/LICENSE#L13"
+    }],
+    "bugs": "https://github.com/example/issues",
+    "repositories": [{
+        "type": "git",
+        "url": "http://github.com/example.git",
+        "path": "packages/app"
+    }],
+    "dependencies": {
+        "dojo": "~1.10.4",
+        "dijit": "~1.10.4",
+        "dojox": "~1.10.4"
+    },
+    "main": "src",
+    "homepage": "http://example.com/",
+    "dojoBuild": "app.profile.js"
+}
+```
+ [CommonJS Packages/1.0](http://wiki.commonjs.org/wiki/Packages/1.0)规范为包描述提供了可选项的一个全部列表。如果你计划只在内部使用你的代码，你可以将它退到最小配置，不过你至少要包含`dojoBuild`来让builder能找到你的build配置文件。
+
+##包build配置文件
+
