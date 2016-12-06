@@ -24,7 +24,7 @@ Dojo的build系统是综合和可高度定制化的。它还可以进行扩展�
 layer本质上是一个单独JavaScript文件，它一般会包含几个模块，有时还有其它资源。一个layer通常build的主要输出，创建这个文件然后成为你应用的可分配之处。一个layer可以是一个引导layer，它包含Dojo的引导代码可以让Dojo加载其它模块。你需要什么layer以及它们的内容都由你的应用和设计来决定。不一定有一个“正确”的方式。
 
 ### build配置文件
-build配置文件是一个给builder提供代码处理相关信息的很小的JavaScript文件。在就的build系统中，你可能有一个配置文件，它包含了所有你需要的东西放在`util/buildscripts/profiles`目录。Dojo1.7以后，它变得高度分散，每个包都有塔自己的build配置文件，然后你还有一个主build配置文件，它指导package和layer的builder，也提供用来优化代码的配置选项。
+build配置文件是一个给builder提供代码处理相关信息的很小的JavaScript文件。在旧的build系统中，你可能只有一个配置文件，它包含了所有你需要的东西，放在`util/buildscripts/profiles`目录。Dojo1.7以后，它变得高度分散，每个包都有它自己的build配置文件，然后你还有一个主build配置文件，它指导package和layer的builder，也提供用来优化代码的配置选项。
 
 ### 压缩
 这个概念是关于在不改变代码功能的前提下获取和压缩JavaScript代码。从效率的角度看它很强大并且一些开发者喜欢它让代码变的模糊，但是它让调试变得困难。这将是你不愿对“build”过的代码做开发的原因之一。Dojo Builder利用两个工具集进行压缩。第一个是ShrinkSafe，只有它能够用在1.7之前、1.7及之后的builder里。builder还可以利用Google的 [Closure Compiler](https://developers.google.com/closure/compiler/)。
