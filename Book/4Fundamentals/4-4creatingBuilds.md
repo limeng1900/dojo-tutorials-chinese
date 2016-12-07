@@ -94,4 +94,30 @@ Dojo的主体包（`dojo`、`dijit`和`dojox`）和其它包并列，包括你�
  [CommonJS Packages/1.0](http://wiki.commonjs.org/wiki/Packages/1.0)规范为包描述提供了可选项的一个全部列表。如果你计划只在内部使用你的代码，你可以将它退到最小配置，不过你至少要包含`dojoBuild`来让builder能找到你的build配置文件。
 
 ##包build配置文件
+build profile是build系统的主要配置文件。它是一个JavaScript文件，存放着创建全部build必须的指令的`profile`对象。一个包的最基本build profile如下：
+```
+var profile = (function(){
+    return {
+        resourceTags: {
+            amd: function(filename, mid) {
+                return /\.js$/.test(filename);
+            }
+        }
+    };
+})();
+```
+注意我们如何使用匿名函数。这可以帮你确认环境中的其它代码不会干扰你的配置文件。这也给你提供了做更复杂的自包含计算来生成配置文件的机会。
+对于build profile的链接到`dojoBuild`只需要包含一个`resourceTags`来检测它是否不是应用本身的首要build profile。
+这里提供了构建你包的builder的“最少”信息。当builder读取这个包时，会将包里的每个文件都传递给`resourceTags`函数来检测标记是否适合该文件。这个过程会传递两个参数，文件名和MID（Module ID）。如果函数返回`true`那么标记适用（当然`false`就是不适用）。
+这里在做的就是将每一个以`.js`结尾的文件标记为一个AMD模块，然后builder就会以此处理它，而不是当做一个旧Dojo模块。下面是标记包资源的其他标签：
+`amd`
+	该资源是一个AMD模块。
+`declarative`
+	该资源使用声明式标记你想要扫描的依赖项。
+`test`
+	该资源是包的部分测试代码。
+`copyOnly`
+	该资源应该复制到目标位置，不能改变。
+`miniExclude`
+	如果配置选项`mini`为真，该资源不应该被复制到目标位置。
 
