@@ -24,4 +24,5 @@
    * [4.2数组](Book/4Fundamentals/4-2arrays.md)
    * [4.3对象扩张](Book/4Fundamentals/4-3augmentingObjects.md)
    * [4.4创建Build](Book/4Fundamentals/4-4creatingBuilds.md)
+   * 4.5使用声明式语法
 
