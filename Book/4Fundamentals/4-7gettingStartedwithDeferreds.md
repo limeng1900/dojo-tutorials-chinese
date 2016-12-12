@@ -8,7 +8,7 @@
 当你第一次听说“Deferred”时，它可能听起来像一个神秘对象，实际上它是异步操作（如Ajax）的有力工具。最简单的形式如一个Deferred等待直到一段时间后执行一个动作；本质上，你推迟该动作直到一个前置动作完成。Ajax就属于这种情况：在服务器成功返回信息之前， 我们不想执行一些动作。关键在于能够等待值的返回。在这篇教程中，我们将结合之前 [Ajax tutorial](https://dojotoolkit.org/documentation/tutorials/1.10/ajax/) 的知识并探索如何使用Deferred来提高异步行为的交互能力。
 
 ##dojo/Deferred
-Dojo对延迟对象的实现是`dojo/Deferred`（从0.3版本就开始出现），它在Dojo1.8版本进行了重构。现在起在实例化一个`Deferred`、动作或者将引用的回调之后，可以通过传递一个函数给`then`方法进行注册，在`Deferred`完成之后（a success）调用`then`方法。`then`方法也接收第二个参数：在`Deferred`被拒（an error）之后调用一个函数，该函数通常被称为`errback`。我们来看一个示例来帮助消化：
+Dojo对deferred对象的实现是`dojo/Deferred`（从0.3版本就开始出现），它在Dojo1.8版本进行了重构。现在起在实例化一个`Deferred`、动作或者将引用的回调之后，可以通过传递一个函数给`then`方法进行注册，在`Deferred`完成之后（a success）调用`then`方法。`then`方法也接收第二个参数：在`Deferred`被拒（an error）之后调用一个函数，该函数通常被称为`errback`。我们来看一个示例来帮助消化：
 
 ```
 require(["dojo/Deferred", "dojo/request", "dojo/_base/array", "dojo/dom-construct", "dojo/dom", "dojo/domReady!"],
