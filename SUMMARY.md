@@ -27,4 +27,5 @@
     * [4.5使用声明式语法](Book/4Fundamentals/4-5usingDeclarativeSyntax.md)
     * [4.6创建类](Book/4Fundamentals/4-6creatingClasses.md)
     * [4.7Deferred入门](Book/4Fundamentals/4-7gettingStartedwithDeferreds.md)
+    * [4.8特征检测和设备优化的Build](Book/4Fundamentals/4-8featureDetection.md)
 
