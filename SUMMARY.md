@@ -29,4 +29,5 @@
     * [4.7Deferred入门](Book/4Fundamentals/4-7gettingStartedwithDeferreds.md)
     * [4.8特征检测和设备优化的Build](Book/4Fundamentals/4-8featureDetection.md)
     * [4.9使用dojo\/hash和dojo\/router](Book/4Fundamentals/4-9usingDojoHash.md)
+    * [4.10用hitch和partial生成函数](Book/4Fundamentals/4-10hitchAndPartial.md)
 
