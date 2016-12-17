@@ -1,9 +1,6 @@
 # 4.11 JSONP和dojo/request
 
 原文地址：https://dojotoolkit.org/documentation/tutorials/1.10/jsonp/index.html
-**本翻译项目放在GitBook上，欢迎参与。** 
-GitBook地址：https://www.gitbook.com/book/limeng1900/dojo1-11-tutorials-translation-in-chinese/details 
-转载请注明出处：http://blog.csdn.net/taijiedi13/ – 碎梦道
 
 ----------
 
