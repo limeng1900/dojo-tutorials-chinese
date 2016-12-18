@@ -31,4 +31,5 @@
     * [4.9使用dojo\/hash和dojo\/router](Book/4Fundamentals/4-9usingDojoHash.md)
     * [4.10用hitch和partial生成函数](Book/4Fundamentals/4-10hitchAndPartial.md)
     * [4.11JSONP和dojo\/request](Book/4Fundamentals/4-11jsonp.md)
+    * [4.12Dojo Deferreds 和 Promises](Book/4Fundamentals/4-12promises.md)
 
