@@ -96,3 +96,127 @@ original.then(function(response){
 如你所见，作用链很强大；当你知道链上的每一环都是不可变的，它就更棒了。
 
 也要注意`Deferred`包含里一个重要属性：`promise`。这是一个只实现promise API的对象，它表示`Deferred`将产生的值。`promise`属性可以防止某人意外（或出于某些目的）调用`resolve`或`reject`来最小化来自你API用户的副作用，但是仍然允许他们获取原始`Deferred`的值。
+
+##dojo/when
+现在我们已经理解什么是promise以及它有什么用，我们再来谈谈`dojo/when`。它是一个Dojo提供的强大功能，让你可以用一致的API来处理promise和标准值。
+
+`dojo/when`函数接收4个参数：一个promise或值，一个回调（可选），一个错误处理（可选）和一个progress处理器（可选）。它分两种用法：
+
+ - 如果第一个参数不是一个promise并且提供回调，回调将在提供第一个参数之后立即被调用，并返回回调的结果。如果没有提供回调，直接返回第一个参数。
+ - 如果第一个参数是一个promise，回调、错误处理和progress处理都将传递给promise的`then`方法，并将你的回调设置为当promise准备好时执行，返回结果promise。
+
+让我们再看下[Deferred tutorial](https://dojotoolkit.org/documentation/tutorials/1.10/deferreds/)教程的`getUserList`函数：
+
+```
+function getUserList(){
+    return request.get("users-mangled.json", {
+        handleAs: "json"
+    }).then(function(response){
+        return arrayUtil.map(response, function(user){
+            return {
+                id: user[0],
+                username: user[1],
+                name: user[2]
+            };
+        });
+    });
+}
+```
+比如说users列表不会经常改变，并且可以缓存在客户端而不用每次调用时都要获取。在这个例子中，因为`dojo/when`接收一个只或promise，可以改变`getUserList`来返回一个promise或users数组，随后我们可以用`dojo/when`处理返回值：
+
+```
+require(["dojo/_base/array", "dojo/when", "dojo/request",
+        "dojo/dom", "dojo/dom-construct", "dojo/json"],
+    function(arrayUtil, when, request, dom, domConstruct, JSON){
+        var getUserList = (function(){
+            var users;
+            return function(){
+                if(!users){
+                    return request.get("users-mangled.json", {
+                        handleAs: "json"
+                    }).then(function(response){
+                        // Save the resulting array into the users variable
+                        users = arrayUtil.map(response, function(user){
+                            return {
+                                id: user[0],
+                                username: user[1],
+                                name: user[2]
+                            };
+                        });
+
+                        // Make sure to return users here,
+                        // for valid chaining
+                        return users;
+                    });
+            }
+            return users;
+        };
+    })();
+
+    when(getUserList(), function(users){
+        // This callback will be run after the request completes
+
+        var userlist = dom.byId("userlist1");
+        arrayUtil.forEach(users, function(user){
+            domConstruct.create("li", {
+                innerHTML: JSON.stringify(user)
+            }, userlist);
+        });
+
+        when(getUserList(), function(user){
+            // This callback will run right away since it's already in cache
+
+            var userlist = dom.byId("userlist2");
+            arrayUtil.forEach(users, function(user){
+                domConstruct.create("li", {
+                    innerHTML: JSON.stringify(user)
+                }, userlist);
+            });
+        });
+    });
+});
+```
+>[View Demo](https://dojotoolkit.org/documentation/tutorials/1.10/promises/demo/when.html)
+
+也可能你主管创建user列表的API，想要一个干净的API来让你的开发人员从服务器（通过一个Deferred）或者数组传递给你一个users列表。在这个例子中，你可以提出一个像下面这样的函数：
+
+```
+function createUserList(node, users){
+    var nodeRef = dom.byId(node);
+
+    return when(
+        users,
+        function(users){
+            arrayUtil.forEach(users, function(user){
+                domConstruct.create("li", {
+                    innerHTML: JSON.stringify(user)
+                }, nodeRef);
+            });
+        },
+        function(error){
+            domConstruct.create("li", {
+                innerHTML: "Error: " + error
+            }, nodeRef);
+        }
+    );
+}
+
+var users = request.get("users-mangled.json", {
+    handleAs: "json"
+}).then(function(response){
+    return arrayUtil.map(response, function(user){
+        return {
+            id: user[0],
+            username: user[1],
+            name: user[2]
+        };
+    });
+});
+
+createUserList("userlist1", users);
+createUserList("userlist2",
+    [{ id: 100, username: "username100", name: "User 100" }]);
+```
+>[View Demo](https://dojotoolkit.org/documentation/tutorials/1.10/promises/demo/when-create.html)
+
+如你所见，`doio/when`可是让开发者使用一个API优雅地处理生产者和用户两端的同步和异步用例。
