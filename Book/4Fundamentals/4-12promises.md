@@ -220,3 +220,63 @@ createUserList("userlist2",
 >[View Demo](https://dojotoolkit.org/documentation/tutorials/1.10/promises/demo/when-create.html)
 
 如你所见，`doio/when`可是让开发者使用一个API优雅地处理生产者和用户两端的同步和异步用例。
+
+##用dojo/promise/all管理promise列表
+`dojo/promise/all`用来代替`dojo/promise/all`，它本质上是将几个promise的结果合并到一个promise来提供一个管理多重异步进程的机制。有时你需要从多个资源并行获取数据，并在全部请求完成后得到通知。你可能设置某些调用Deferred系统统计返回数的Deferred，但是你不用手动实现它。Dojo在这里为你提供了`dojo/promise/all`。
+
+只需要简单地传递一个Deferred对象或数组给`dojo/promise/all`的构造器就可以使用它。同样，结果要么是一个使用和参数相同键的对象，要么是一个跟传递给构造器参数顺序相同的数组。我们来看一个例子：
+
+```
+require(["dojo/promise/all", "dojo/Deferred", "dojo/request", "dojo/_base/array", "dojo/dom-construct", "dojo/dom", "dojo/json", "dojo/domReady!"],
+function(all, Deferred, request, arrayUtil, domConstruct, dom, JSON){
+    var usersDef = request.get("users.json", {
+        handleAs: "json"
+    }).then(function(response){
+        var users = {};
+
+        arrayUtil.forEach(response, function(user){
+            users[user.id] = user;
+        });
+
+        return users;
+    });
+
+    var statusesDef = request.get("statuses.json", {
+        handleAs: "json"
+    });
+    all([usersDef, statusesDef]).then(function(results){
+        var users = results[0],
+            statuses = results[1],
+            statuslist = dom.byId("statuslist");
+
+        if(!results[0] || !results[1]){
+            domConstruct.create("li", {
+                innerHTML: "An error occurred"
+            }, statuslist);
+            return;
+        }
+        arrayUtil.forEach(statuses, function(status){
+            var user = users[status.userId];
+            domConstruct.create("li", {
+                id: status.id,
+                innerHTML: user.name + ' said, "' + status.status + '"'
+            }, statuslist);
+        });
+    });
+});
+```
+这里我们想要从服务器得到一个users列表，并且将它和一个状态列表合并。在注册回调之后会返回一个用户hash，我们将Deferred都传递给`dojo/promise/all`并用它注册回调。回调随后就会检查错误，如果没有找到什么，它会遍历这些状态并匹配到用户。无所谓那个请求首先完成，`dojo/promise/all`总会给我们一个按照传递给它的Deferreds的顺序排列的结果。
+>[View Demo](https://dojotoolkit.org/documentation/tutorials/1.10/promises/demo/all.html)
+
+##小结
+Dojo附加的promise API以两种方式让开发者有机会创建更加强大的应用：避免由于`Deferred`这样的函数因保证promise不变产生的副作用；同时`dojo/when`为基于promise的和基于值的编程之间的鸿沟提供一座桥梁。最重要的是，有了`dojo/promise/all`，你就可以用一个回调来处理多个deferreds/promises。
+
+##资源
+
+ - [dojo/promise Reference Guide](https://dojotoolkit.org/reference-guide/1.10/dojo/promise/Promise.html)
+ - [dojo/promise/all Reference Guide](https://dojotoolkit.org/reference-guide/1.10/dojo/promise/all.html)
+ - [dojo/promise/Promise API](https://dojotoolkit.org/api/?qs=1.10/dojo/promise/Promise)
+ - [dojo/promise/all API](https://dojotoolkit.org/api/?qs=1.10/dojo/promise/all)
+ - [Ajax with dojo.request Tutorial](https://dojotoolkit.org/documentation/tutorials/1.10/ajax)
+ - [Getting Start with Deferreds Tutorial](https://dojotoolkit.org/documentation/tutorials/1.10/deferreds)
+ - [Future and Promises](http://en.wikipedia.org/wiki/Futures_and_promises) Wikipedia article
