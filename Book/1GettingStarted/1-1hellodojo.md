@@ -1,10 +1,10 @@
 # 1.1HelloDojo
 
 ##简介
-本篇入门，关于Dojo的加载和一些核心功能，另外还有基于AMD的模块加载，还有出错时如何寻找帮助。 
+本篇入门，主要是关于Dojo的加载和一些核心功能，另外还有基于AMD的模块加载，还有如何在出现错误时寻求帮助。 
 
 ##入门
-开始使用只需要把dojo.js文件引入web页面，方式和其他javascript文件一样。Dojo在主流CDNs上也有。
+开始用Dojo只需要把dojo.js文件包含在web页面里，方式和其他javascript文件一样。Dojo在主流CDN上也有，先来把下面的代码放在一个文件里，以`hellodojo.html`命名该文件，然后在浏览器里打开。
 
 ```
 <!DOCTYPE html>
@@ -21,9 +21,11 @@
 </body>
 </html>
 ```
-通常，你只要加载一个库的js文件就可以使用它的所有方法。Dojo以前也是这样的，但1.7版后源码采取异步模块定义(AMD)，可实现完全模块化的web应用开发。选择AMD是因为它使用纯javascript使源文件可在浏览器中工作，同时支持资源优化的构建过程以提高部署时的应用性能。
-那么dojo.js加载后有什么功能是可用的？Dojo的AMD加载器，它定义了两个全局函数require和define。AMD细节见[Introduction to AMD tutorial](https://dojotoolkit.org/documentation/tutorials/1.10/modules/)。入门阶段只需要知道require用来加载并使用模块、define用来自定义模块。一个模块作为一个单独的javascript源文件。
-几个HTML DOM操作的Dojo基本模块是dojo/dom and dojo/dom-construct。下面是如何加载和使用这几个模块：
+通常，当你了加载一个库的js文件就可以使用它的所有方法了。Dojo以前也是这样的，但1.7版后源码采取[异步模块定义(AMD)](https://github.com/amdjs/amdjs-api/wiki/AMD)，可以实现完全模块化的web应用开发。选择AMD是因为它使用纯javascript，使源文件在浏览器中正常工作的同时支持生产资源优化的build过程来提高部署时的应用性能。
+
+那么在`dojo.js`加载之后提供什么功能呢？那就是Dojo的AMD加载器，它定义了[两个全局函数](https://dojotoolkit.org/reference-guide/1.10/loader/amd.html#the-amd-api)`require`和`define`。AMD细节见[Introduction to AMD tutorial](https://dojotoolkit.org/documentation/tutorials/1.10/modules/)。在入门阶段你只需要知道require用来加载并使用模块、define用来自定义模块。一个模块就是一个单独的javascript源文件。
+
+还有几个HTML DOM 操作的Dojo基本模块是[dojo/dom](https://dojotoolkit.org/reference-guide/1.10/dojo/dom.html) 和 [dojo/dom-construct](https://dojotoolkit.org/reference-guide/1.10/dojo/dom-construct.html)。下面我们来看看如何加载和使用这几个模块：
 
 ```
 <!DOCTYPE html>
@@ -50,9 +52,11 @@
 </body>
 </html>
 ```
-require的第一个参数是一系列你需要加载的模块的标识符。总之，这些映射直接对应文件名，如果你查看Dojo目录，就能找到定义这些模块的dom.js和dom-constuct.js。
-AMD加载器进行异步操作，并且js异步操作执行回调，require的第二个参数就是回调函数。在回调函数中就是你提供的使用这些模块的代码。AMD加载器将模块作为参数传递给你的回调函数（它们以同样的顺序列在模块id数组中）。你可以随意命名这些参数，但为了代码一致性和可读性推荐使用基于模块id的命名。
-在第18和19行可见dom和dom-construct模块用来通过id获取一个DOM节点并操作其内容。
+`require`的第一个参数（14-17行）是一个你需要加载的模块id组成的数组。通常，它们直接对应文件名，如果你下载了[Dojo源代码](https://dojotoolkit.org/download/)，就能在Dojo目录里找到定义了这些模块的`dom.js`和`dom-constuct.js`。
+
+AMD加载器进行异步操作，并且用回调实现了JavaScript中的异步操作，`require`的第二个参数就是回调函数。在回调函数中就是你提供的使用这些模块的代码。AMD加载器将模块作为参数传递给你的回调函数（它们以同样的顺序列在模块id数组中）。你可以随意命名这些参数，但为了代码一致性和可读性推荐使用基于模块id的命名。
+
+在第18-19行可见`dom`和`dom-construct`模块用来通过id获取一个DOM节点并操作其内容。
 AMD加载器会自动加载请求模块的所有子依赖，所以要只累出你直接使用的模块。
 
 ##定义AMD模块
