@@ -1,4 +1,4 @@
-# 1.1HelloDojo
+# 1.1 Hello Dojo
 
 ##简介
 本篇入门，主要是关于Dojo的加载和一些核心功能，另外还有基于AMD的模块加载，还有如何在出现错误时寻求帮助。 
@@ -61,31 +61,27 @@ AMD加载器进行异步操作，并且用以回调的方式实现了JavaScript�
 对于你请求的模块，AMD加载器会自动加载它的所有依赖模块，所以要只需要列出你直接用到的模块即可。
 
 ##定义AMD模块
-下面有一个加载并使用模块的示例。定义和加载你的个人模块，你需要确认的是通过HTTP服务加载HTML文件。在你的目录下添加一个demo目录，将hellodojo.html包含在内，并在demo目录下创建一个myModule.js文件。
+下面有一个加载并使用模块的示例。要定义和加载你自己的模块，先要确认你是从HTTP服务器加载HTML文件的（本地也可以，但是由于有一些安全敏感设置会阻止许多使用“file:///”协议的内容，所以你需要一个HTTP服务）。对于这些例子，你的web服务器只需要提供文件的能力，不需要其他任何花哨的功能。在你的目录下添加一个`demo`目录，它包含你的`hellodojo.html`文件，并在`demo`目录下创建一个`myModule.js`文件。
 
 ```
 demo/
     myModule.js
 hellodojo.html
 ```
-在myModule.js中输入：
+现在在myModule.js中输入：
 
 ```
 define([
-    // The dojo/dom module is required by this module, so it goes
-    // in this list of dependencies.
+    // 这个模块需要用到dojo/dom模块，所以要把它放进依赖模块列表中。
     'dojo/dom'
 ], function(dom){
-    // Once all modules in the dependency list have loaded, this
-    // function is called to define the demo/myModule module.
+    // 一旦依赖模块列表中的模块全都加载完成，就会调用这个函数来定义demo/myModule模块。
     //
-    // The dojo/dom module is passed as the first argument to this
-    // function; additional modules in the dependency list would be
-    // passed in as subsequent arguments.
+    // dojo/dom 作为第一个参数传递给这个函数，依赖列表中的其他模块会作为随后的参数传入。
 
     var oldText = {};
 
-    // This returned object becomes the defined value of this module
+    // 这个返回的对象成为该模块定义的值
     return {
         setText: function (id, text) {
             var node = dom.byId(id);
@@ -101,10 +97,10 @@ define([
     };
 });
 ```
-ADM define函数和require函数参数相似，一个模块id数组和一个回调函数。AMD加载器将回调函数的返回值存储为该模块的值，所以其他通过require（或者define）加载该模块的代码会接受到定义模块的返回值。
+ADM `define`函数的参数和`require`函数相似，一个模块id数组和一个回调函数。AMD加载器将回调函数的返回值存储为该模块的值，然后当其他代码通过require（或者define）加载该模块时，会接收到该模块定义的返回值。
 
-##CDN用法
-从CDNs使用Dojo并加载本地模块需用一些额外配置（更多见AMD进阶和通过CDN使用模块教程）。更新hellodojo.html代码如下：
+##CDN的使用
+通过CDN来使用Dojo时，加载本地模块需用一些额外配置（关于配置Dojo的AMD加载器和通过CDN使用Dojo的更多信息请参考[AMD进阶](https://dojotoolkit.org/documentation/tutorials/1.10/modules_advanced/)和[在CDN下使用模块](https://dojotoolkit.org/documentation/tutorials/1.10/cdn/)的教程）。像下面这样更新`hellodojo.html`的代码：
 
 ```
 <!DOCTYPE html>
