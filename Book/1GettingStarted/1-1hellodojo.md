@@ -111,23 +111,20 @@ ADM `define`函数的参数和`require`函数相似，一个模块id数组和一
 </head>
 <body>
     <h1 id="greeting">Hello</h1>
-    <!-- configure Dojo -->
+    <!-- 配置 Dojo -->
     <script>
-        // Instead of using data-dojo-config, we're creating a dojoConfig
-        // object *before* we load dojo.js; they're functionally identical,
-        // it's just easier to read this approach with a larger configuration.
+        // 为了代替data-dojo-config，我们在加载dojo.js之前创建一个dojoConfig对象；
+        //它们在功能上完全相同，只是这种方法对于大型配置来说更容易读懂。
         var dojoConfig = {
             async: true,
-            // This code registers the correct location of the "demo"
-            // package so we can load Dojo from the CDN whilst still
-            // being able to load local modules
+            // 这个代码注册“demo”包的正确位置，这样我们就能够在从CDN加载Dojo的同时加载本地模块了
             packages: [{
                 name: "demo",
                 location: location.pathname.replace(/\/[^/]*$/, '') + '/demo'
             }]
         };
     </script>
-    <!-- load Dojo -->
+    <!-- 加载 Dojo -->
     <script src="//ajax.googleapis.com/ajax/libs/dojo/1.10.4/dojo/dojo.js"></script>
 
     <script>
@@ -144,10 +141,13 @@ ADM `define`函数的参数和`require`函数相似，一个模块id数组和一
 </body>
 </html>
 ```
-除了添加Dojo配置意外，还重新定义了主要代码，现在只需要载入demo/myModule，并且利用它完成页面上的文本操作。可见，定义和加载模块其实很简单。我们也修改了dojo.js的URL，使用遵守约定（http或https）的链接，防止一些浏览器因混合内容报出安全警告。
-在AMD模块中组织代码可便于你创建在浏览器立即执行的模块化js资源，同时也易于调试。AMD模块中变量使用局部作用域，避免了搅乱全局命名空间，也提供了更快的名称解析。AMD是能够多重实现的标准规范，不会局限于单一实现，AMD模块可以被任何AMD加载器调用。
+除了添加Dojo配置之外，我们还重新定义了主要JS代码，现在它只加载`demo/myModule`，并利用该模块完成页面上的文本操作。由此可见，定义和加载模块其实很简单。我们也修改了指向`dojo.js`的URL，省略了协议（26行），它创建一个跟页面使用相同协议（http或https）的链接，这样可以防止会让一些浏览器发出安全警报的混合内容。
+
+在AMD模块中组织代码，可让你创建模块化的JavaScript资源，它们可以立即在浏览器中执行，并且易于调试。AMD模块中变量使用局部作用域，避免搅乱全局命名空间的同时，还提供了更快的名称解析。AMD是一个有着多重实现的标准规范，所以你不会被局限在单一实现方式上 —— 任何AMD加载器都可以使用AMD模块。
+
 ##等待DOM
-实现web应用必须要考虑的就是确保浏览器在执行代码前DOM是可用的。plugin（插件）——一个特殊的AMD模块实现了此功能。插件可以像其他模块一样require，在模块标识符后加个感叹号（!）会激活他们的特殊功能。对于DOM ready事件，Dojo提供dojo/domReady插件。只要将这个插件作为一个依赖包含在任何require或define调用，那么DOM准备好之前就不会回调：
+
+有一件事通常是web应用必须要实现的，那就是确保浏览器在执行代码前DOM是可用的。我们通过一个特殊的AMD模块—— plugin（插件）实现这个功能。插件可以像其他模块一样require，但是要在模块标识符后加个感叹号（!）来激活他们的特殊功能。对于DOM ready事件，Dojo提供`dojo/domReady`插件。只要在任何`require`或`define`调用时，将这个插件包含在依赖列表里，那么对应的回调在DOM准备好之前就不会触发：
 
 ```
 require([
@@ -158,10 +158,14 @@ require([
     greeting.innerHTML += ' from Dojo!';
 });
 ```
-上面的例子在greeting元素中添加一些文本，它只能在DOM加载后进行（先前不用这个是由于script元素放在body元素的地步，会将脚本延迟到DOM加载后进行）。再次，记得模块标识符以！结尾，否则dojo/domReady模块会和普通模块一样。
-有时候，比如dojo/domReady，加载一个模块只是为了它的副作用，并不需要引用它。AMD加载器并不知道这个，它会将依赖数组里的每一个模块引用给回调函数，所以任何你不需要返回值的模块都要放在依赖数组的末尾，并且别在回调函数的参数列表中引用。
+上面的例子简单地在`greeting`元素中添加一些文本，这件事只能在DOM加载后进行（先前不用这个是由于`script`元素放在`body`元素的底部，这样会将脚本的处理延迟到DOM加载之后）。注意，模块标识符以“!”结尾，否则`dojo/domReady`模块会变得和普通模块一样。
+
+有时候，比如dojo/domReady，我们加载一个模块只是为了利用它的副作用，并不需要引用它。但是AMD加载器并不知道这个，它总是会将依赖数组里的每一个模块都引用给回调函数，所以任何你不需要返回值的模块都应该放在依赖数组的末尾，并且在回调函数的参数列表中忽略它们。
+
 DOM操作函数的更多信息参见 [Dojo DOM Functions](https://dojotoolkit.org/documentation/tutorials/1.10/dom_functions/)。
+
 ##添加视觉效果
+
 给页面添加动画，模块dojo/fx。下面使用slideTo方法实现滑行动画。
 
 ```
@@ -182,7 +186,9 @@ require([
     }).play();
 });
 ```
+
 ##使用Dojo资源
+
 CDNs很方便，例子中使用它是因为你可以复制代码运行。但它有一些劣势：
 
  - 为了保证性能，每个模块都进行了压缩和优化，所以出现问题时调试比较困难。
