@@ -249,4 +249,10 @@ var dojoConfig = {
 Dojo Toolkit的入门只要简单的添加一个脚本标签和require一些模块就可以，但是Dojo巨大的领域和力量意味着我们这才刚刚接触到了皮毛。根据你的需求，本系列教程提供几个不同的学习路径：
 
 - 如果你之前用过Dojo，并且想要更好地理解AMD的世界及旧Dojo，理解其他已经改变的概念，你应该看一看“[新一代Dojo](https://dojotoolkit.org/documentation/tutorials/1.10/modern_dojo/)”教程。
-    - 如果你
+    - 如果你想要在已有的静态页面或服务器驱动的网站上添加一些特性和特效，接下来你可以看看[使用dojo/query](https://dojotoolkit.org/documentation/tutorials/1.10/using_query/)、[Dojo事件](https://dojotoolkit.org/documentation/tutorials/1.10/using_query/)、[特效](https://dojotoolkit.org/documentation/tutorials/1.10/effects/)和[动画](https://dojotoolkit.org/documentation/tutorials/1.10/animation/)教程。
+- 如果你想要在你的站点添加一些Ajax，[Ajax 与 Dojo](https://dojotoolkit.org/documentation/tutorials/1.10/ajax/)是你的菜。
+- 如果你想要在你的Web站点或应用上整合丰富的widget库，看一看[创建基于模板的Widget](https://dojotoolkit.org/documentation/tutorials/1.10/templated/)教程以及[Dijit widgets系列教程](https://dojotoolkit.org/documentation/?ver=1.10#widgets)。
+- 如果你试图更多地了解关于构建复杂Web应用和利用Dojo实用功能的力量，请看[核心概念](https://dojotoolkit.org/documentation/?ver=1.10#coreConcepts)部分。
+- 如果你的目标是一个移动应用，快去看[dojox/mobile入门](https://dojotoolkit.org/documentation/tutorials/1.10/mobile/flickrview/part1)。
+
+无论你想要什么结果，Dojo都提供行业领先的开源工具来帮助你让你的应用在更少的时间里取得惊人的结果。我们期待看到你提出的想法。
