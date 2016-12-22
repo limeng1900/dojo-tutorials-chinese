@@ -164,9 +164,9 @@ require([
 
 DOM操作函数的更多信息参见 [Dojo DOM Functions](https://dojotoolkit.org/documentation/tutorials/1.10/dom_functions/)。
 
-##添加视觉效果
+##添加视觉特效
 
-给页面添加动画，模块dojo/fx。下面使用slideTo方法实现滑行动画。
+现在我们可以给页面添加一些动画来让它更生动。我们可以加载模块`dojo/fx`来进行。下面使用`dojo/fx`的`slideTo`方法给欢迎辞添加一个滑动动画。
 
 ```
 require([
@@ -174,11 +174,11 @@ require([
     'dojo/fx',
     'dojo/domReady!'
 ], function (dom, fx) {
-    // The piece we had before...
+    // 我们之前有的
     var greeting = dom.byId('greeting');
     greeting.innerHTML += ' from Dojo!';
 
-    // ...but now, with an animation!
+    // 现在，有了动画
     fx.slideTo({
         node: greeting,
         top: 100,
@@ -186,20 +186,26 @@ require([
     }).play();
 });
 ```
+如你所见，我们已经添加了一个`dojo/fx`依赖，然后使用这个模块在`greeting`元素上播放动画。
+> 特效和动画的更多信息请参考 [Dojo Effects](https://dojotoolkit.org/documentation/tutorials/1.10/effects/) 和 [Animations](https://dojotoolkit.org/documentation/tutorials/1.10/animation/)教程。
 
 ##使用Dojo资源
 
-CDNs很方便，例子中使用它是因为你可以复制代码运行。但它有一些劣势：
+CDN很方便，我们在教程的例子中使用它是因为你直接复制代码就可以运行了，不需要做任何修改。不过它有一些劣势：
 
- - 为了保证性能，每个模块都进行了压缩和优化，所以出现问题时调试比较困难。
- - 它要求你的应用必须连接互联网。
- - 要包含你自己的惯用模块需要更折腾。
- - 当你产品化的时候，定制化的Dojo能够针对你特定的应用和浏览器提高性能，但CDN实现不了。
+ - 为了保证性能，它们是一个Dojo的“build”版本，就是说每个模块都进行了压缩和优化以便于在网上高效传输。那么也就是说当出现问题时，调试会很困难。
+ - 它要求你必须连接互联网来使用你的应用，很多情况下这不太现实。
+ - 当你要包含自定义模块时就需要更多的努力。
+ - 如果你想要将你的应用产品化，定制化build版本的Dojo能够针对你特定的应用和浏览器提高性能，但使用一刀切的CDN build你实现不了。
  
-按以下通用步骤使用Dojo：
+按照以下步骤使用Dojo资源，它们是你使用Dojo开发项目的通用方式：
 
-1.下载Dojo
-2.把Dojo放到你的项目文件中：
+1.[下载Dojo](https://dojotoolkit.org/download/)——查看本文结尾部分并下载发布源代码。
+    
+如果你熟悉[git](http://git-scm.com/)和[GitHub](https://github.com/dojo/)，你可以从[GitHub克隆Dojo](https://github.com/dojo/)。你至少要下载[dojo](https://github.com/dojo/dojo)，某种程度上你可能还会想要[dijit](https://github.com/dojo/dijit)、[dojox](https://github.com/dojo/dojox)和[util](https://github.com/dojo/util)（这些都包含在源码下载中）。
+
+2.把Dojo放到你的项目文件中，例如：
+
 ```
 demo/
     myModule.js
@@ -209,12 +215,14 @@ dojox/
 util/
 hellodojo.html
 ```
+
 3.本地加载dojo.js，比CDN更好。
 
 ```
 <script src="dojo/dojo.js"></script>
 ```
-4.更新配置文件包
+
+4.更新你的配置文件包
 
 ```
 var dojoConfig = {
@@ -229,6 +237,16 @@ var dojoConfig = {
 };
 
 ```
+
 ##获取帮助
- [dojo-interest mailing list](http://mail.dojotoolkit.org/mailman/listinfo/dojo-interest) 
- [#dojo on irc.freenode.net](https://dojotoolkit.org/chat)
+
+任何时候当你困惑或遇到棘手问题时，你都不是一个人在战斗！志愿者们随时准备着通过[dojo-interest mailing list ](http://mail.dojotoolkit.org/mailman/listinfo/dojo-interest)的邮件和通过 #dojo on irc.freenode.net[](https://dojotoolkit.org/chat)的IRC来提供帮助。如果你在我们的文档中发现了问题，或者觉得哪里有所误导或混淆，可以用文档底部的反馈页面来告知我们。
+
+如果你需要紧急或者秘密的帮助，或者有志愿者团队解决不了的问题，可以通过SitePen找到 [commercial Dojo support](http://www.sitepen.com/support/)和[training workshops](http://www.sitepen.com/workshops/)。
+
+##下一步做什么？
+
+Dojo Toolkit的入门只要简单的添加一个脚本标签和require一些模块就可以，但是Dojo巨大的领域和力量意味着我们这才刚刚接触到了皮毛。根据你的需求，本系列教程提供几个不同的学习路径：
+
+- 如果你之前用过Dojo，并且想要更好地理解AMD的世界及旧Dojo，理解其他已经改变的概念，你应该看一看“[新一代Dojo](https://dojotoolkit.org/documentation/tutorials/1.10/modern_dojo/)”教程。
+    - 如果你
