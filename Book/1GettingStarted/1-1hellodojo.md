@@ -21,7 +21,7 @@
 </body>
 </html>
 ```
-通常，当你了加载一个库的js文件就可以使用它的所有方法了。Dojo以前也是这样的，但1.7版后源码采取[异步模块定义(AMD)](https://github.com/amdjs/amdjs-api/wiki/AMD)，可以实现完全模块化的web应用开发。选择AMD是因为它使用纯javascript，使源文件在浏览器中正常工作的同时支持生产资源优化的build过程来提高部署时的应用性能。
+通常当你加载了一个库的js文件之后，就可以使用它的所有方法了。Dojo以前也是这样的，但1.7版后源码采取[异步模块定义(AMD)](https://github.com/amdjs/amdjs-api/wiki/AMD)，可以实现完全模块化的web应用开发。选择AMD是因为它使用纯javascript，使源文件在浏览器中正常工作的同时支持生产资源优化的build过程来提高部署时的应用性能。
 
 那么在`dojo.js`加载之后提供什么功能呢？那就是Dojo的AMD加载器，它定义了[两个全局函数](https://dojotoolkit.org/reference-guide/1.10/loader/amd.html#the-amd-api)`require`和`define`。AMD细节见[Introduction to AMD tutorial](https://dojotoolkit.org/documentation/tutorials/1.10/modules/)。在入门阶段你只需要知道require用来加载并使用模块、define用来自定义模块。一个模块就是一个单独的javascript源文件。
 
