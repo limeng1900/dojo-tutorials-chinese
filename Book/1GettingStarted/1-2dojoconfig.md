@@ -247,11 +247,15 @@ var dojoConfig = {
 
 >[View Demo](https://dojotoolkit.org/documentation/tutorials/1.10/dojo_config/demo/packages.html)
 
+更多细节参考[关于新加载器的文档](https://dojotoolkit.org/reference-guide/1.10/loader/amd.html)。
 
+> 新加载器也支持旧的`dojo.require()`资源加载和在Dojo 1.6教程里涉及的像`modolePaths`这样的配置属性，因此开发者可以轻易地安全升级已有的应用，不用太担心。
 
 ## 区域和国际化
-Dojo的i18n系统是独立的，有自己的教程，这里在展示dojoConfig时会涉及到它。
-你可以从dojoConfig使用Dojo的i18n基础设置来对任何widgets或局部目录进行区域配置。locale选项可以用来重写你的浏览器提供给Dojo的默认配置。示例：
+
+Dojo的i18n系统是独立的，值得拥有它自己的教程，这里涉及它只是为了更好地展示`dojoConfig`。
+
+你可以从`dojoConfig`使用Dojo的i18n基础设置来对任何widget或本地化内容进行区域配置。`locale`选项可以用来重写你的浏览器提供给Dojo的默认配置。一个简单的例子：
 
 ```
 <script>
@@ -261,7 +265,7 @@ Dojo的i18n系统是独立的，有自己的教程，这里在展示dojoConfig�
             "dojo-debug-messages": true
         },
         parseOnLoad: true,
-        // look for a locale=xx query string param, else default to 'en-us'
+        //寻找一个 locale=xx 查询字符串参数，或者默认为 'en-us'
         locale: location.search.match(/locale=([\w\-]+)/) ? RegExp.$1 : "en-us"
     };
 </script>
@@ -273,8 +277,7 @@ Dojo的i18n系统是独立的，有自己的教程，这里在展示dojoConfig�
         var now = new Date();
         var dialog = new Dialog({
             id: "dialog",
-            // set a title on the dialog of today's date,
-            // using a localized date format
+            // 为今天日期的对话框设置一个标题，使用本地化的日期格式
             title: "Today: " + locale.format(now, {
                     formatLength:"full",
                     selector:"date"
@@ -288,30 +291,53 @@ Dojo的i18n系统是独立的，有自己的教程，这里在展示dojoConfig�
 </script>
 ```
 [Demo with dojo.config.locale ='zh' (Chinese)](https://dojotoolkit.org/documentation/tutorials/1.10/dojo_config/demo/localeConfig.html?locale=zh)
-示例中，定义了dojoConfig对象的`locale`属性，我们从查询字符串里寻找`locale=xx`参数。把locale设置放在任何模块加载之前，确保正确的区域信息绑定依赖在需要的时候已加载（Setting the locale ahead of any module loading ensures that the correct localized message bundle dependencies are loaded where necessary.）。案例中使用`dojo/date/locale`模块来格式化数据对象，然后传递给Dialog title的本地字符串（a localized string）。
+
+示例中，我们定义了`dojoConfig`对象的`locale`属性，从查询字符串里寻找`locale=xx`参数。这是一个手动演示，通常你可能会把区域硬编码。把`locale`设置放在任何模块加载之前，确保在需要的地方加载正确的本地化信息绑定依赖。案例中使用`dojo/date/locale`模块将日期对象格式化为本地化字符串，然后作为对话框的标题。
+
+> 对于多语种页面，除了浏览器或`dojoConfig.locale`属性指定的那个，你还需要为其他区域加载bundles。在这个例子中，使用区域名字符串的数组来配置`extraLocale`属性。
+> 使用`dojo/parser`时，`lang=`设置一个祖先DOMNode重写`dojoConfig.locale`的设置。这个行为将在Dojo2.0发生变化。你也可以为个别的widget指定`lang`，只为这个widget重写`dojoConfig.locale`设置。
 
 ##自定义属性
-因为`dojo.config`总是存在而且是提供页面配置的合理位置，Dojo的一些其它模块会使用它配置自己的特殊属性。Dijit，尤其是DojoX都会这样：
+
+因为`dojo.config`总是存在，而且是提供页面范围配置的合理位置，Dojo的一些其它模块会使用它配置自己的特殊属性。我们会在Dijit看到这个，DojoX里更多，它们的模块标识和行为可以设置：
+
 **Dijit Editor**
-	allowXdRichTextSave
+    
+    allowXdRichTextSave
+
 **dojox GFX**
+
 	dojoxGfxSvgProxyFrameUrl, forceGfxRenderer, gfxRenderer
+
 **dojox.html metrics**
+
 	fontSizeWatch
+
 **dojox.io transports and plugins**
+	
 	xipClientUrl, dojoCallbackUrl
+
 **dojox.image**
+	
 	preloadImages
+
 **dojox.analytics plugins**
+	
 	sendInterval, inTransitRetry, analyticsUrl, sendMethod, maxRequestSize, idleTime, watchMouseOver, sampleDelay, targetProps, windowConnects, urchin
+
 **dojox.cometd**
+	
 	cometdRoot
+
 **dojox.form.FileUploader**
+	
 	uploaderPath
+
 **dojox.mobile**
+	
 	mblApplyPageStyles, mblHideAddressBar, mblAlwaysHideAddressBar, mobileAnim, mblLoadCompatCssFiles
 
-对dojox模块起作用，对你自己的应用和模块也一样。`dojoConfig`是一个提供行为、页面、应用或广泛性能配置的理想位置。看看下面的例子：
+它对dojox模块有用，对你自己的应用和模块也一样。`dojoConfig`是一个提供行为、页面级或应用级属性配置的理想地方。看看下面的例子：
 
 ```
 <script>
@@ -330,26 +356,34 @@ Dojo的i18n系统是独立的，有自己的教程，这里在展示dojoConfig�
     "dojo/json", "dojo/_base/config", "dojo/io-query", "dojo/domReady!"]
     , function(Dialog, registry, parser, lang, JSON, config, ioQuery) {
 
-        // pull configuration from the query string
-        // and mix it into our app config
+        // 从查询字符串推出配置信息并将它混入我们的app config
         var queryParams = ioQuery.queryToObject(location.search.substring(1));
         lang.mixin(config.app, queryParams);
 
-        // Create a dialog
+        // 创建一个对话框
         var dialog = new Dialog({
             title: "Welcome back " + config.app.userName,
             content: "<pre>" + JSON.stringify(config, null, "\t") + "```"
         });
 
-        // Draw on the app config to put up a personalized message
+        // 利用 app config 来显示一个个性化信息
         dialog.show();
 
     });
 </script>
 ```
-示例中，添加了一个dojoConfig属性`app`，通过dojo.config来弹出一个性化欢迎的Dialog。有很多方法来填充dojoConfig.app，可以使用默认预设和插入特性值。生产中，dojoConfig会在服务器端输出。或者可以从cookie获取json，或者像之前的例子直接中query string提取配置数据。在开发和测试模式下，你可以使用模板提供虚拟值或者加载脚本/模块来填充它。
+>[View Application Config Demo](https://dojotoolkit.org/documentation/tutorials/1.10/dojo_config/demo/appConfig.html)
+
+这个例子中，我们添加了一个`dojoConfig`属性`app`，随后通过`dojo.config`来弹出一个性化欢迎对话框。我们有很多方法来设置`dojoConfig.app`，可以使用默认预设或随后混入具体值。生产中，`dojoConfig`脚本块会写在服务器端。或者，你可以从cookie获取json格式的配置值，或像之前的例子那样，直接从查询字符串提取配置数据来设置它。在开发和测试模式下，你可以使用模板提供虚拟值或者加载一个脚本或模块来设置它。
 
 ##小结
-本节教程中包含了多种dojo.config使用方式——通过dojoConfig或者data-dojo-config。还有dojo.config的值如何向Dojo模块提供属性和影响其行为。
-dojo.config在 Dojo bootstrap阶段和全生命周期良好的位置和角色意味着它可以巧妙的适用于Dojo模块甚至属于你自己的模块和应用。
+
+本节教程中，我们提到了很多常见的`dojo.config`设置方式——通过`dojoConfig`或者`data-dojo-config`，还有它的值如何向Dojo模块提供属性及影响行为。
+
+`dojo.config`在Dojo自展开阶段和全生命周期中具备良好的位置和角色，这也是说同样的思想也适用于Dojo模块甚至属于你自己的模块和应用。
+
+##后记
+- [dojoConfig (djConfig) 文档](https://dojotoolkit.org/reference-guide/1.10/dojo/_base/config.html)
+- [Dojo AMD 加载器配置参考](https://dojotoolkit.org/reference-guide/1.10/loader/amd.html#loader-amd-configuration)
+- [i18n docs](https://dojotoolkit.org/reference-guide/1.10/dojo/i18n.html)
 
