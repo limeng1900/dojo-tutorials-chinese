@@ -1,16 +1,23 @@
 #1.2 使用dojoConfig配置Dojo
-[原文地址](https://dojotoolkit.org/documentation/tutorials/1.10/dojo_config/index.html)：https://dojotoolkit.org/documentation/tutorials/1.10/dojo_config/index.html
-dojoConfig 对象（原djConfig，1.6之前）可以用来设置工具包的选项和默认项。本篇关于如何使用dojoConfig 。
+
+原文地址：https://dojotoolkit.org/documentation/tutorials/1.10/dojo_config/index.html
+
+---
+
+`dojoConfig` 对象（原`djConfig`）可以用来设置toolkit各方面的选项和默认行为。本篇教程我们将探讨有什么可能以及如何在你的代码中使用`dojoConfig`。
 
 ##简介
-dojoConfig 对象是在web页面或应用中配置Dojo的主要机制。它和全局选项的Dojo组件一样被模块加载器引用。需要的话，可以进一步作为自定义应用的配置点。
-旧对象名djConfig已弃用，不过2.0之前还在使用它的代码运行无碍。在写本篇的同时，大多数文档还在使用djConfig；这两个名称是等价的，不过现在起鼓励使用新的dojoConfig。
 
-##准备开始
-先通过几个简单的例子了解dojoConfig在实际工作中是怎么运行的。首先，我们直接看一个dojoConfig的实例：
+`dojoConfig`对象（Dojo 1.6之前是`djConfig`）是在web页面或应用中配置Dojo的主要机制。和带有全局选项的Dojo组件一样，模块加载器会引用它。需要的话，它可以进一步作为自定义应用的配置。
+
+旧对象名`djConfig`已弃用，不过使用它的代码直到2.0之前都可以继续工作。在编写本篇的事件里，大多数文档还在使用`djConfig`；这两个名称是等价的，不过现在起我们会采用并且鼓励大家使用新的`dojoConfig`。
+
+##入门
+
+先通过几个简单的例子了解`dojoConfig`在实际工作中是怎么运行的。首先，我们直接看一个`dojoConfig`的实例：
 
 ```
-<!-- set Dojo configuration, load Dojo -->
+<!-- 设定 Dojo 配置, 加载 Dojo -->
 <script>
     dojoConfig= {
         has: {
@@ -27,35 +34,43 @@ dojoConfig 对象是在web页面或应用中配置Dojo的主要机制。它和�
 // Require the registry, parser, Dialog, and wait for domReady
 require(["dijit/registry", "dojo/parser", "dojo/json", "dojo/_base/config", "dijit/Dialog", "dojo/domReady!"]
 , function(registry, parser, JSON, config) {
-    // Explicitly parse the page
+    // 显式地解析页面
     parser.parse();
-    // Find the dialog
+    // 找到 dialog
     var dialog = registry.byId("dialog");
-    // Set the content equal to what dojo.config is
+    // 将内容设置为 dojo.config 的内容
     dialog.set("content", "<pre>" + JSON.stringify(config, null, "\t") + "```");
-    // Show the dialog
+    // 显示 dialog
     dialog.show();
 });
 </script>
 
-<!-- and later in the page -->
+<!-- 随后的页面 -->
 <div id="dialog" data-dojo-type="dijit/Dialog" data-dojo-props="title: 'dojoConfig / dojo/_base/config'"></div>
 ```
-请注意dojoConfig定义在脚本块里，这个脚本块要放在dojo.js加载之前。这非常重要，如果颠倒了的话，配置属性就会被忽略。
-在该示例中，设置了三项：parseOnLoad: false, has (dojo-firebug sub-property)和 async: true。另外还设置了一个自定义属性foo: "bar"。这个案例里往页面加入了一个dijit/Dialog。代码运行时require回调将dojo.config的值转换成JSON再传入对话框显示出来。结果里可以看到parseOnLoad、has和foo。另外还有其它一些跨域、CDN dojo版本等信息。
-提醒各位看官注意dojoConfig和dojo/_base/config有很大的区别。*dojoConfig纯粹以输入将配置参数传递给加载器和模块为目的。dojo/_base/config用于在引导过程中加入参数以便模块代码随后查找。*
-下面是一个相同的dojo/_base/config例子：
+请注意`dojoConfig`定义在脚本块里，这个脚本块要放在dojo.js加载之前。这非常重要，如果颠倒了的话，配置属性就会被忽略。
+
+在该例中，设置了三项内容：`parseOnLoad: false`, `has` (`dojo-firebug` 子属性)和 `async: true`。另外还设置了一个自定义属性`foo: "bar"`。这个示例里往页面添加了一个`dijit/Dialog`。代码运行时require回调将`dojo.config`的值转换成JSON再放在对话框显示出来。结果里可以看到`parseOnLoad`、`has`和`foo`。另外还有其它一些跨域、Google-CDN-hosted 版本的dojo 1.10等信息。
+
+提醒大家注意`dojoConfig`和`dojo/_base/config`之间的区别。*`dojoConfig`纯粹是为了输入——这就是我们如何将配置参数传递给加载器和模块。在引导过程中，`dojo/_base/config`则由这些参数填充，以便模块代码随后查找。*
+
+下面是一个相同的声明式编写的例子：
 
 ```
 <script src="//ajax.googleapis.com/ajax/libs/dojo/1.10.4/dojo/dojo.js"
         data-dojo-config="has:{'dojo-firebug': true}, parseOnLoad: false, foo: 'bar', async: 1">
 </script>
 ```
-该案例中，在Dojo的script标签内使用data-dojo-config属性，完全等同于之前的例子。两个例子中，配置选项最终都插入dojo/_base/config对象中，该对象在dojo.js加载后的引导过程中被迅速获取。
-你可以在dojoConfig中设置新的值，然后在控制台查看dojo.config对象。dojoConfig是Dojo的通用配置属性包。下面来了解它都有哪些选项和如何使用。
+>[View Demo](https://dojotoolkit.org/documentation/tutorials/1.10/dojo_config/demo/data-dojo-config.html)
 
-###has()配置
-Dojo 1.7后版本的一个重要特点是使用has()模式进行特性提取。我们通过指定hash对象作为has的属性在dojoConfig里配置特性（features）。这个特性集合用来决定是否启用Dojo的支持功能。例如，可以禁用amd factory scan：
+
+该例中，我们在Dojo的`script`标签内使用同样的`data-dojo-config`属性。它完全等同于之前的例子。两个例子中，我们提供的配置选项最终都混入`dojo/_base/config`对象中，该对象在`dojo.js`加载时发生的自展处理之后可以马上可以获取到。
+
+你可以在`dojoConfig`中设置一些新的值，然后在控制台查看`dojo.config`对象来确认这件事。所以说，`dojoConfig`是Dojo的通用配置属性包。下面来了解它都有哪些选项和如何使用。
+
+##has()配置
+
+Dojo 1.7后版本的一个重要特点是使用has()模式进行特征检测。我们通过指定hash对象作为`has`的属性在`dojoConfig`里配置特性（features）。这个特性集合用来决定是否启用Dojo的支持功能。例如，可以禁用amd factory scan：
 
 ```
 <script>
@@ -67,7 +82,9 @@ Dojo 1.7后版本的一个重要特点是使用has()模式进行特性提取。�
 </script>
 
 ```
+
 ##Debug/Firebug Lite配置
+
 从Dojo1.7之前的版本或者其他教程里你可以已经熟悉isDebug配置项，就是用它开启调试信息。在1.7之后，它也放入了has()特性中。设置dojo-firebug 特性就可以在旧版本的IE浏览器里开启调试（isDebug 依然可用，不过在异步模式下这个特性能够更早的加载）。它对于Firebug或者其他支持console的浏览器没什么用。不过要是没有console，它就会加载Dojo版本的 Firebug Lite，并在页面底部生成console界面。这在早期的IE和其他不带开发工具的浏览器用起来的很方便。
 想要得到已弃用和实验性特性的调试信息，要把 dojo-debug-messages设为true（默认false，除非设置了isDebug）。如果这个特性设置为false，相关的警告信息都不会显示。下面例子中，开启一个开发控制台（浏览器提供或者使用Firebug Lite）并且记录调试信息：
 
