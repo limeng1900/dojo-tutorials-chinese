@@ -70,7 +70,7 @@ require(["dijit/registry", "dojo/parser", "dojo/json", "dojo/_base/config", "dij
 
 ##has()配置
 
-Dojo 1.7后版本的一个重要特点是使用has()模式进行特征检测。我们通过指定hash对象作为`has`的属性在`dojoConfig`里配置特性（features）。这个特性集合用来决定是否启用Dojo的支持功能。例如，可以禁用amd factory scan：
+Dojo 1.7后版本的一个重要特点是使用has()模式进行特征检测。我们可以在`dojo.config`中为has()指定特征，只需要将特征的hash对象作为`has`的属性就可以。这个特性集合用来决定Dojo的某些支持能力。例如，我们可以禁用amd factory scan（扫描 CommonJS require（模块）语句的模块来作为deps进行加载）：
 
 ```
 <script>
@@ -85,8 +85,9 @@ Dojo 1.7后版本的一个重要特点是使用has()模式进行特征检测。�
 
 ##Debug/Firebug Lite配置
 
-从Dojo1.7之前的版本或者其他教程里你可以已经熟悉isDebug配置项，就是用它开启调试信息。在1.7之后，它也放入了has()特性中。设置dojo-firebug 特性就可以在旧版本的IE浏览器里开启调试（isDebug 依然可用，不过在异步模式下这个特性能够更早的加载）。它对于Firebug或者其他支持console的浏览器没什么用。不过要是没有console，它就会加载Dojo版本的 Firebug Lite，并在页面底部生成console界面。这在早期的IE和其他不带开发工具的浏览器用起来的很方便。
-想要得到已弃用和实验性特性的调试信息，要把 dojo-debug-messages设为true（默认false，除非设置了isDebug）。如果这个特性设置为false，相关的警告信息都不会显示。下面例子中，开启一个开发控制台（浏览器提供或者使用Firebug Lite）并且记录调试信息：
+在Dojo1.7之前的版本或者其它教程里你可能已经熟悉`isDebug`配置项了，用它来开启调试信息。在1.7之后，它也在更高的粒度上用has()特征进行了指定。设置dojo-firebug 特征就可以在旧版本的IE浏览器里用Firebug Lite帮助调试（isDebug 依然可用，不过在异步模式下使用这个特征能够更早的加载）。如果你有Firebug或者其它控制台存在和开启，它就没什么用了。不过你要是没有控制台，它就会加载Dojo版本的 Firebug Lite，并在页面底部生成控制台界面。这在早期的IE和其他不带开发工具的浏览器里用起来很方便。
+
+想要得到已弃用和实验性特征的调试信息，我们可以把 dojo-debug-messages设为true（默认`false`，除非设置了isDebug）。如果这个特征设置为false，相关的警告信息都不会显示。下面例子中，开启一个开发控制台（浏览器提供或者使用Firebug Lite）并且记录调试信息：
 
 ```
 <script>
@@ -98,22 +99,24 @@ Dojo 1.7后版本的一个重要特点是使用has()模式进行特征检测。�
     };
 </script>
 ```
-**dojo-guarantee-console**：默认为true，必要时会创建一个虚拟console对象，然后任何console.*语句都会静默执行，而不会抛出异常。
-以下附加项是用来进一步配置页内控制台的：
+为了禁用一个有保证的控制台对象，我们可以dojo-guarantee-console特征设为false。这个特征默认为true，必要时会创建一个虚拟`console`对象，然后任何`console.*`记录语句都会安全而安静地执行，不会抛出异常。
 
- - **debugContainerId：** 把console界面放在一个指定的元素里。
- - **popup：** console放在新的弹出窗口，而不是当前页面里。
+以下附加项是用来进一步配置这个页内控制台的：
+
+ - **debugContainerId：** 把控制台界面放在一个指定的元素里。
+ - **popup：** 控制台放在新的弹出窗口，而不是当前页面里。
 
 ##Loader配置
-1.7版本起Dojo针对toolkit的新AMD模块格式添加了一个新的加载器。新加载器加了几个新的配置选项，可以定义packages、maps等。比较重要的配置参数有：
 
- - **baseUrl：** 模块标识符的基础URL预设，用来转换成路径或URL：
+1.7版本起Dojo针对toolkit的新AMD模块格式添加了一个新的加载器。新加载器加了几个新的配置选项，它们至关重要，用来定义packages、maps等。加载器的更多细节参考 [Advanced AMD Usage tutorial](https://dojotoolkit.org/documentation/tutorials/1.10/modules_advanced/)。比较重要的配置参数有：
+
+ - **`baseUrl`：** 在将模块标识符转换成路径或URL时，模块标识符的基础URL预设：
  
 
 ```
  baseUrl: "/js"
 ```
- - **packages：** 提供package名称和位置的对象数组：
+ - **`packages`：** 提供package名称和位置的对象数组：
  
 
 ```
@@ -122,7 +125,7 @@ Dojo 1.7后版本的一个重要特点是使用has()模式进行特征检测。�
         location: "/js/myapp"
     }]
 ```
- - **map：** 可以把模块标识符映射到不同的路径：
+ - **`map`：** 可以把模块标识符映射到不同的路径：
  
 
 ```
@@ -132,7 +135,7 @@ map: {
         }
     }
 ```
- - **paths：** 模块id到文件路径的分段映射：
+ - **`paths`：** 模块id片段到文件路径的映射：
  
 
 ```
@@ -147,7 +150,7 @@ var dojoConfig = {
     }
 };
 
-    // ...is equivalent to:
+    // ...等同于:
 var dojoConfig = {
     packages: [
         { name: "package1", location: "../lib/package1" },
@@ -155,91 +158,96 @@ var dojoConfig = {
     ]
 };
 ```
- - **async：** 定义Dojo core是否异步加载 ，值可以是 true, false 或 legacyAsync（将加载器永久设置为 legacy cross-domain模式）：
+ - **`async`：** 定义Dojo core是否异步加载 ，它的值可以是 `true`, `false` 或 `legacyAsync`（将加载器永久设置为 旧跨域访问模式）：
  
 
 ```
    async: true
 ```
- - **parseOnLoad：** 如果为true，在DOM和所有初始依赖（包含在dojoConfig.deps数组里）加载完成后用dojo/parser解析页面：
+ - **`parseOnLoad`：** 如果为`true`，在DOM和所有初始依赖（包含在`dojoConfig.deps`数组里）加载完成后用`dojo/parser`解析页面：
  
 
 ```
     parseOnLoad: true
 ```
-这里推荐parseOnLoad为false（默认），开发人员可以require dojo/parser并调用parser.parse()。
- - **deps：** 一个资源路径数组，这些资源要在Dojo加载后立即加载：
+> 这里推荐`parseOnLoad`为`false`（默认,所以其实你可以忽略这个属性），开发人员可以require `dojo/parser`并调用`parser.parse()`。
+
+ - **`deps`：** 一个资源路径的数组，这些资源要在Dojo加载后立即加载：
  
 
 ```
 	deps: ["dojo/parser"]
 ```
- - **callback：** deps的回调：
+ - **`callback`：** deps的回调：
  
 
 ```
   callback: function(parser) {
-        // Use the resources provided here
+        // 使用这里提供的资源
     }
 ```
- - **waitSeconds：** 发出模块加载超时信号前的等待时间，默认为0（永远等待）：
+ - **`waitSeconds`：** 发出模块加载超时信号前的等待时间，默认为0（永远等待）：
 
 ```
     waitSeconds: 5
 ```
- - **cacheBust：** 如果为true，向每个模块URL附加时间字符串以避免模块缓存：
+ - **`cacheBust`：** 如果为true，向每个模块URL附加时间作为查询字符串以避免模块缓存：
  
 
 ```
     cacheBust: true
 ```
-下面是使用基本参数的简单例子。一个很常用的方案是使用来自CDN的Dojo Toolkit和本地模块。下面使用Google CDN和来自/documentation/tutorials/1.10/dojo_config/demo的模块：
+让我们创建一个使用这些基本参数的简单演示。常用的一个方案是使用来自CDN的Dojo Toolkit和本地模块。下面使用Google CDN和来自`/documentation/tutorials/1.10/dojo_config/demo`的模块：
 
 ```
-<!-- Configure Dojo first -->
+<!-- 首先配置 Dojo -->
 <script>
     dojoConfig = {
         has: {
             "dojo-firebug": true,
             "dojo-debug-messages": true
         },
-        // Don't attempt to parse the page for widgets
+        // 不要试图为widget解析页面
         parseOnLoad: false,
         packages: [
-            // Any references to a "demo" resource should load modules locally, *not* from CDN
+            // 任何指向demo资源的引用都应该本地加载, 而*不是* 从 CDN
             {
                 name: "demo",
                 location: "/documentation/tutorials/1.10/dojo_config/demo"
             }
         ],
-        // Timeout after 10 seconds
+        // 10秒后超时
         waitSeconds: 10,
         map: {
-            // Instead of having to type "dojo/domReady!", we just want "ready!" instead
+            // 不用再输入 "dojo/domReady!", 我盟只需要用 "ready!" 代替
             "*": {
                 ready: "dojo/domReady"
             }
         },
-        // Get "fresh" resources
+        // 获取 "新鲜" 资源
         cacheBust: true
     };
 </script>
 
-<!-- Load Dojo, Dijit, and DojoX resources from Google CDN -->
+<!-- 从Google CDN 加载 Dojo, Dijit, and DojoX 资源 -->
 <script src="//ajax.googleapis.com/ajax/libs/dojo/1.10.4/dojo/dojo.js"></script>
 
-<!-- Load a "demo" module -->
+<!-- 加载一个 "demo" 模块  -->
 
 <script>
     require(["demo/AuthoredDialog", "dojo/parser", "ready!"], function(AuthoredDialog, parser) {
-        // Parse the page
+        // 解析页面
         parser.parse();
 
-        // Do something with demo/AuthoredDialog...
+        // 用 demo/AuthoredDialog 做些什么...
     });
 </script>
 ```
-使用packages配置令所有demo/*的引用指向/documentation/tutorials/1.10/dojo_config/demo/目录，对于dojo、dijit、dojox则来自Google CND。如果demo package没有定义，那么demo/AuthoredDialog的请求就会指向//ajax.googleapis.com/ajax/libs/dojo/1.10.4/dojo/demo/AuthoredDialog.js。例中也用了别名，把dojo/domReady绑定到ready。
+我们使用`packages`配置让所有`demo/*`的引用指向`/documentation/tutorials/1.10/dojo_config/demo/`目录，对于`dojo`、`dijit`、`dojox`则从Google CND获得。如果`demo`包还没有定义，那么`demo/AuthoredDialog`的请求就会指向//ajax.googleapis.com/ajax/libs/dojo/1.10.4/dojo/demo/AuthoredDialog.js。我们还使用了别名，把`ready`关联到了`dojo/domReady`。
+
+>[View Demo](https://dojotoolkit.org/documentation/tutorials/1.10/dojo_config/demo/packages.html)
+
+
 
 ## 区域和国际化
 Dojo的i18n系统是独立的，有自己的教程，这里在展示dojoConfig时会涉及到它。
