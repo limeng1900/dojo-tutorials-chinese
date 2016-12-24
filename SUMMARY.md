@@ -3,7 +3,7 @@
 * [Introduction](README.md)
 * [1 入门](Book/1GettingStarted/1GettingStarted.md)
     * [1.1 开启Dojo之旅](Book/1GettingStarted/1-4dojostart.md)
-    * [1.1 Hello Dojo](Book/1GettingStarted/1-1hellodojo.md)
+    * [1.2 Hello Dojo](Book/1GettingStarted/1-1hellodojo.md)
     * [1.2使用dojoConfig配置Dojo](Book/1GettingStarted/1-2dojoconfig.md)
     * [1.3新的Dojo](Book/1GettingStarted/1-3moderndojo.md)
 * [2 模块](Book/2Modules/2modules.md)
