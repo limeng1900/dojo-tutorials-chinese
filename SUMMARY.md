@@ -1,6 +1,7 @@
 # Summary
 
 * [Introduction](README.md)
+    * [log](log.md)
 * [1 入门](Book/1GettingStarted/1GettingStarted.md)
     * [1.1 开启Dojo之旅](Book/1GettingStarted/1-4dojostart.md)
     * [1.2 Hello Dojo](Book/1GettingStarted/1-1hellodojo.md)
