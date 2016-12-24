@@ -1,4 +1,4 @@
-# 1.3新的Dojo
+# 1.4 新一代Dojo
 
 原文地址：https://dojotoolkit.org/documentation/tutorials/1.10/modern_dojo/index.html
 

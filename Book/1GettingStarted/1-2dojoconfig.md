@@ -1,4 +1,4 @@
-#1.2 使用dojoConfig配置Dojo
+#1.3 使用dojoConfig配置Dojo
 
 原文地址：https://dojotoolkit.org/documentation/tutorials/1.10/dojo_config/index.html
 
