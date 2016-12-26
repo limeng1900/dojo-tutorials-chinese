@@ -91,13 +91,11 @@ require(["dojo/dom", "dojo/string", "dojo/domReady!"], function(dom, string){
 
 ## Events and Advice
 
-`dojo.connect()` 和 `dojo.disconnect()` 被移入到 `dojo/_base/connect` 模块，新Dojo使用 `dojo/on` 来进行事件处理， `dojo/aspect` 则针对方法advice。 [Events](https://dojotoolkit.org/documentation/tutorials/1.10/events/) 有更深层次的教程，这里将涉及一些差异。
+`dojo.connect()` 和 `dojo.disconnect()` 都移到 `dojo/_base/connect` 模块里，“新一代”Dojo使用 `dojo/on` 来进行事件处理， `dojo/aspect` 则针对方法advice。 [Events](https://dojotoolkit.org/documentation/tutorials/1.10/events/) 有更深层次的教程，不过在这里我们主要讲一些变化。
 
-在旧Dojo中，事件和修正方法行为之间没有明确的区别，都用的 `dojo.connect()` 。事件是事情发生在于对象之间的关系，例如一个点击事件。 `dojo/on` 完美处理DOM原生时间以及Dojo对象或小部件引发的事件。 advice 是源于面向方面编程（AOP）的概念外加连接点或方法的行为。Dojo的很多部分都符合AOP，
+在旧Dojo中，在事件和修改方法行为上没有做明确的区分，都使用 `dojo.connect()` 。事件是发生的事情与对象之间的关系，例如一个点击事件。 `dojo/on` 完美处理DOM原生事件以及Dojo对象或widget引发的事件。 advice 是源于面向方面编程（AOP）的概念再加上连接点或方法的额外行为。Dojo的很多部分都符合AOP，`dojo/aspect` 则为此提供了一个集中机制。
 
-`dojo/aspect` 则为此提供了一个集中机制。
-
-在旧Dojo中，我们有多种方式来完成一个点击事件的处理：
+在旧Dojo中，我们有很多种方式来处理一个按钮`onclick`事件：
 
 ```
 <script>
@@ -124,7 +122,7 @@ require(["dojo/dom", "dojo/string", "dojo/domReady!"], function(dom, string){
   </body>
 ```
 
-在新Dojo中只使用 `dojo/on`, 你可以用编程式或声明式的来编写你的代码，不用管你处理的是DOM事件还是 Dijit\/widget ：
+在“新一代”Dojo中只需要使用 `dojo/on`, 你可以以编程式或声明式来编写你的代码，不用管你处理的是DOM事件还是 Dijit/widget事件 ：
 
 ```
  <script>
@@ -159,8 +157,9 @@ require(["dojo/dom", "dojo/string", "dojo/domReady!"], function(dom, string){
     </div>
   </body>
 ```
+>[View Demo](https://dojotoolkit.org/documentation/tutorials/1.10/modern_dojo/demo/modern_dojo-button.html)
 
-> 注意没有用 `dijit.byId` ，在新Dojo中widgets使用 `dijit/registry` ， `registry.byId()` 用来取得widget的引用。另外，注意 `dojo/on` 处理DOM节点和widget事件的方式是一样的。
+> 注意我们没用 `dijit.byId` ，在“新一代”Dojo中widgets使用 `dijit/registry` ， `registry.byId()` 用来取得widget的引用。另外，注意 `dojo/on` 处理DOM节点和widget的事件的方式是一样的。
 
 旧方式给方法添加功能时你可能要这么做：
 
@@ -173,7 +172,7 @@ require(["dojo/dom", "dojo/string", "dojo/domReady!"], function(dom, string){
   dojo.disconnect(handle);
 ```
 
-新Dojo中， dojo\/aspect 可以让你获取一个方法的advice并且在另一方法之前、之后或周围添加行为。比如，你可用 `aspect.after()` 代替 `dojo.connect()` ：
+“新一代”Dojo中， `dojo/aspect` 可以让你获取一个方法的advice并且在“before”、“after”或“around”另一个方法添加行为。比如，你可用 `aspect.after()` 代替 `dojo.connect()`，像下面这样：
 ```
   require(["dojo/aspect"], function(aspect){
     var callback = function(){
@@ -184,46 +183,47 @@ require(["dojo/dom", "dojo/string", "dojo/domReady!"], function(dom, string){
     handle.remove();
   });
 ```
+>请查看[`dojo/aspect`](https://dojotoolkit.org/reference-guide/1.10/dojo/aspect.html)的参考指南来获取更多细节，或者 [David Walsh's blog on `dojo/aspect`](http://davidwalsh.name/dojo-aspect)和 [SitePen's blog comparing dojo/on and dojo/aspect](http://www.sitepen.com/blog/2014/03/26/dojo-faq-what-is-the-difference-between-dojoon-and-dojoaspect/)。
 
-## 要点
+##Topics
 
-Dojo中另一块经过小修正的是 publish\/subscribe 功能，它在 `dojo/topic` 模块下进行了模块化和改进。
+Dojo的“publish/subscribe”功能也经历了疑点修正，它在 `dojo/topic` 模块下进行了模块化和改进。
 
-旧Dojo中这么做：
+例如，旧Dojo中这么做：
 
 ```
-  // To publish a topic
+  // 发布一个 topic
   dojo.publish("some/topic", [1, 2, 3]);
 
-  // To subscribe to a topic
+  // 订阅一个 topic
   var handle = dojo.subscribe("some/topic", context, callback);
 
-  // And to unsubscribe from a topic
+  // 从一个 topic 取消订阅
   dojo.unsubscribe(handle);
 ```
 
-新Dojo中，利用 `dojo/topic` ：
+在“新一代”Dojo中，利用 `dojo/topic` 可以像下面这样：
 ```
   require(["dojo/topic"], function(topic){
-    // To publish a topic
+    // 发布一个 topic
     topic.publish("some/topic", 1, 2, 3);
 
-    // To subscribe to a topic
+    // 订阅一个 topic
     var handle = topic.subscribe("some/topic", function(arg1, arg2, arg3){
       // ...
     });
 
-    // To unsubscribe from a topic
+    // 从一个 topic 取消订阅
     handle.remove();
   });
 ```
-> 从 `dojo/topic` 指南去获取更多细节。
+> 你可以从 `dojo/topic` 参考指南去获取更多细节。
 
->  注意publish参数不再是一个数组，而只是简单的传递。
+>  注意publish参数不再是一个数组，而只是简单通过发布传递。
 
 ## Promises
 
-Dojo 的一个核心概念是Deffrred类，改变了Dojo1.5中设定的架构，这里需要讨论下。另外，在1.8和更新的版本中，promise API进行了重写。它大部分只是在语义上和之前一样，但不在支持旧的API，如果你要使用它，就需要采用新API。在就Dojo中可以看到Deferred如此工作：
+Dojo 的一个核心概念是`Deffrred`类，“promise”架构的变化发生在Dojo1.5中，这里值得讨论下。另外，在1.8和更新的版本中，promise API进行了重写。它大部分只是在语义上和之前一样，但不在支持旧的API，如果你要使用它，就需要采用“新一代”API。在旧Dojo中可以看到`Deferred`如此工作：
 
 ```
 function createMyDeferred(){
@@ -243,7 +243,7 @@ function createMyDeferred(){
   });
 ```
 
-新Dojo这么做：
+“新一代”Dojo中这么做：
 ```
 require(["dojo/Deferred"], function(Deferred){
     function createMyDeferred(){
@@ -262,14 +262,15 @@ require(["dojo/Deferred"], function(Deferred){
     });
   });
 ```
+>`Deferred`更多相关内容请看[Deferred入门](https://dojotoolkit.org/documentation/tutorials/1.10/deferreds/)教程。
 
-> dojo/DeferredList 依然还在，只是不赞成再用。你能在 `dojo/promise/all` 和`dojo/promise/first`. 找到更健壮和相似的功能。
+> `dojo/DeferredList` 依然还在，只是不赞成再用。你能在 [`dojo/promise/all`](https://dojotoolkit.org/reference-guide/1.10/dojo/promise/all.html) 和[`dojo/promise/first`](https://dojotoolkit.org/reference-guide/1.10/dojo/promise/first.html)找到相似的更加健壮的功能。
 
 ## Requests
 
-任何一个Javascript库都将Ajax作为其核心基础之一。Dojo1.8之后，这一基本构建API更加优秀——跨平台运行，易于拓展，提高代码重用。以前，你常常为了获取外来数据只能在XHR、 Script 和 IFrame IO communication 之间挣扎。 `dojo/request` 可以帮你让整个过程更加容易。
+任何一个Javascript库都会将Ajax作为其核心基础之一。Dojo1.8之后，这一基本构建API焕然一新——跨平台运行，易于拓展，提高代码重用。以前，你常常为了获取外来数据只能在XHR、 Script 和 IFrame IO通信之间挣扎。 `dojo/request` 可以帮你让整个过程更加容易。
 
-就像 `dojo/promise` 一样，就的实现方法依然保留，但是你可以很容易的利用新的方法重构你的代码。例如，旧Dojo中你可能这么做：
+就像 `dojo/promise` 一样，旧的实现方法依然保留，但是你可以很容易的利用新的方法重构你的代码。例如，旧Dojo中你可能这么做：
 
 ```
   dojo.xhrGet({
@@ -284,7 +285,7 @@ require(["dojo/Deferred"], function(Deferred){
   });
 ```
 
-新Dojo你要这么做：
+“新一代”Dojo你可以这么做：
 
 ```
  require(["dojo/request"], function(request){
@@ -298,43 +299,92 @@ require(["dojo/Deferred"], function(Deferred){
   });
 ```
 
-> `dojo/request` 会加载对于你的平台最合适的请求处理器，比如浏览器的XHR。上面的代码可以在NodeJS上轻易的运行，你不需要做任何修改。
+> `dojo/request` 会加载最适用于你平台的请求处理器，比如浏览器的XHR。上面的代码可以在NodeJS上轻易的运行，你不需要做任何修改。
 
-这也是一个很大的话题，详细参见 [Ajax with dojo\/request](https://dojotoolkit.org/documentation/tutorials/1.10/ajax/) 。
+这也是一个很大的话题，详细参见 [Ajax with dojo/request](https://dojotoolkit.org/documentation/tutorials/1.10/ajax/)教程 。
 
 ## DOM操作
 
-到现在你可能已经发现了这样的趋势，Dojo不仅舍弃了对全局命名空间的依赖，采用了一些新模式，而且还打破了一些模块的核心功能，这点在 JavaScript toolkit 比DOM操作上做的更多。
+到现在你可能已经发现了这样的趋势，Dojo不仅舍弃了对全局命名空间的依赖，采用了一些新模式，而且还将一些核心功能打散放进模块中，对于JavaScript toolkit就比DOM操作更加核心。
 
-模块摘要和内容（略）。
+好吧，它也分解成了很多更小的块并进行模块化。这里有这些模块摘要和内容：
+<table class="info">
+  <thead>
+    <tr><th>Module</th><th>Description</th><th>Contains</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>dojo/dom</td><td>Core DOM functions</td><td>byId()
+isDescendant()
+setSelectable()</td></tr>
+    <tr><td>dojo/dom-attr</td><td>DOM attribute functions</td><td>has()
+get()
+set()
+remove()
+getNodeProp()</td></tr>
+    <tr><td>dojo/dom-class</td><td>DOM class functions</td><td>contains()
+add()
+remove()
+replace()
+toggle()</td></tr>
+    <tr><td>dojo/dom-construct</td><td>DOM construction functions</td><td>toDom()
+place()
+create()
+empty()
+destroy()</td></tr>
+    <tr><td>dojo/dom-form</td><td>Form handling functions</td><td>fieldToObject()
+toObject()
+toQuery()
+toJson()
+</td></tr>
+    <tr><td>dojo/io-query</td><td>String processing functions</td><td>objectToQuery()
+queryToObject()</td></tr>
+    <tr><td>dojo/dom-geometry</td><td>DOM geometry related functions</td><td>position()
+getMarginBox()
+setMarginBox()
+getContentBox()
+setContentSize()
+getPadExtents()
+getBorderExtents()
+getPadBorderExtents()
+getMarginExtents()
+isBodyLtr()
+docScroll()
+fixIeBiDiScrollLeft()</td></tr>
+    <tr><td>dojo/dom-prop</td><td>DOM property functions</td><td>get()
+set()</td></tr>
+    <tr><td>dojo/dom-style</td><td>DOM style functions</td><td>getComputedStyle()
+get()
+set()</td></tr>
+  </tbody>
+</table>
 
-贯穿新Dojo doolkit的的一个模式就是围绕访问器的逻辑分离。下面这些已经被替代了：
+“新一代”Dojo toolkit的的一贯的模式就是围绕存取器的逻辑分离。下面这些已经被替代了：
 
 ```
  var node = dojo.byId("someNode");
 
-  // Retrieves the value of the "value" DOM attribute
+  // 获取DOM属性 "value" 的值
   var value = dojo.attr(node, "value");
 
-  // Sets the value of the "value" DOM attribute
+  // 设置DOM属性 "value" 的值
   dojo.attr(node, "value", "something");
 ```
 
-下面的示例用使用完全不同的事情实现的同样的功能：
+上面相同的函数依靠不同的参数做了两件完全不同的事，相应的例子如下：
 
 ```
   require(["dojo/dom", "dojo/dom-attr"], function(dom, domAttr){
     var node = dom.byId("someNode");
 
-    // Retrieves the value of the "value" DOM attribute
+    // 获取DOM属性 "value" 的值
     var value = domAttr.get(node, "value");
 
-    // Sets the value of the "value" DOM attribute
+    // 设置DOM属性 "value" 的值
     domAttr.set(node, "value", "something");
   });
 ```
 
-在新Dojo中，你在代码里做什么事很清晰的，很难由于参数的多余或缺失在你的代码里出现你不打算做的事。访问器的分离始终贯穿新Dojo。
+在“新一代”Dojo中，你在代码里做了什么是很清晰的，很难再因为参数的多余或缺失，而在你的代码里出现你不打算做的事。存取器的分离始终贯穿“新一代”Dojo。
 
 ## DataStores 与  Stores
 
