@@ -392,11 +392,11 @@ set()</td></tr>
 
 ## Dijit 和 Widgets
 
-Dijit 也在新Dojo作出了改变，不过随着功能被打破到离散的构建模块在组合出复杂的功能，多数的改变放在了toolkit的基础上。如果要创建自定义widget，参见 [Creating a custom widget](https://dojotoolkit.org/documentation/tutorials/1.10/recipes/custom_widget) 。
+Dijit 也在“新一代”Dojo作出了改变，不过随着功能被打破到离散的构建模块，再组合成复杂的功能，多数的改变发生在toolkit的基础上。如果要创建自定义widget，参见 [Creating a custom widget](https://dojotoolkit.org/documentation/tutorials/1.10/recipes/custom_widget) 。
 
-如果只是用dijit或其他widget开发，那么在 `dojo/Stateful` 和`dojo/Evented` 类中引入了一些核心概念。
+如果只是用dijit或其它widget开发，那么请注意在 `dojo/Stateful` 和`dojo/Evented` 类中引入了一些核心概念。
 
-`dojo/Stateful` 提供widget的离散访问器，这些属性的改变可以看见。例如：
+`dojo/Stateful` 提供widget属性的离散存取器，能够“watch”这些属性的变化。例如：
 
 ```
   require(["dijit/form/Button", "dojo/domReady!"], function(Button){
@@ -404,26 +404,27 @@ Dijit 也在新Dojo作出了改变，不过随着功能被打破到离散的构�
       label: "A label"
     }, "someNode");
 
-    // Sets up a watch on button.label
+    // 在 button.label 设置一个watch
     var handle = button.watch("label", function(attr, oldValue, newValue){
       console.log("button." + attr + " changed from '" + oldValue + "' to '" + newValue + "'");
     });
 
-    // Gets the current label
+    // 获取当前的 label
     var label = button.get("label");
     console.log("button's current label: " + label);
 
-    // This changes the value and should call the watch
+    // 这里改变值并调用 watch
     button.set("label", "A different label");
 
-    // This will stop watching button.label
+    // 这里停止watch button.label
     handle.unwatch();
 
     button.set("label", "Even more different");
   });
 ```
+>[View Demo](https://dojotoolkit.org/documentation/tutorials/1.10/modern_dojo/demo/modern_dojo-watch.html)
 
-`dojo/Evented` 为类提供 `emit()` 和`on()` 函数，这是Dijit和widget的一步更。尤其是，使用 `widget.on()` 来设置你的事件处理更加先进。例如：
+`dojo/Evented` 为类提供 `emit()` 和`on()` 函数，这也编入了Dijit和widget。尤其是，使用 `widget.on()` 来设置你的事件处理更加先进。例如：
 
 ```
  require(["dijit/form/Button", "dojo/domReady!"], function(Button){
@@ -431,16 +432,18 @@ Dijit 也在新Dojo作出了改变，不过随着功能被打破到离散的构�
       label: "Click Me!"
     }, "someNode");
 
-    // Sets the event handling for the button
+    // 为按钮设定事件处理
     button.on("click", function(e){
       console.log("I was clicked!", e);
     });
   });
 ```
+>[View Demo](https://dojotoolkit.org/documentation/tutorials/1.10/modern_dojo/demo/modern_dojo-on.html)
 
 ## Parser
 
-最后是关于 `dojo/parser` 。Dojo同时加强了编程式和声明式标记方式， `dojo/parser` 对声明式标记进行解析，并转化成对象和widget的实例。之前提到的所有新思想同样影响着 `dojo/parser` ，并让它发生了一些新变化。
+最后是关于 `dojo/parser` 。Dojo对编程式和声明标签的方式都进行了加强， `dojo/parser` 用来对声明式标记进行解析，并将其转化成对象和widget的实例。之前提到的所有“新一代”思想同样影响着 `dojo/parser` ，并让它发生了一些新变化。
+
 虽然Dojo依然支持 `parseOnLoad: true` 配置， 但显式地调用解析器通常更有意义 。例如：
 
 ```
@@ -448,16 +451,16 @@ Dijit 也在新Dojo作出了改变，不过随着功能被打破到离散的构�
         parser.parse();
     });
 ```
-解析器的另一大变化就是支持了HTML5的属性标记节点。你可以在HTML5中标记HTML。特别是 `dojoType` 变成了 `data-dojo-type` ，从而用指定对象参数替代无效的 HTML\/XHTML 属性， `data-dojo-props` 属性指定的所有参数都将传递给对象构造器。例如：
+解析器的另一大变化就是支持了标签节点的HTML5兼容属性。你可以在HTML中有效地使用HTML5标记。特别是 `dojoType` 变成了 `data-dojo-type` ，从而用指定对象参数替代无效的 HTML/XHTML 属性，传递给对象构造器的所有参数都将在`data-dojo-props` 属性中指定。例如：
 
 ```
   <button data-dojo-type="dijit/form/Button" tabIndex=2
       data-dojo-props="iconClass: 'checkmark'">OK</button>
 ```
 
-> Dojo 支持在 `data-dojo-type` 里使用Module ID，例如 `dojoType="dijit.form.Button"` 变成`data-dojo-type="dijit/form/Button"`。
+> Dojo 支持在 `data-dojo-type` 里使用模块ID（MID），例如 `dojoType="dijit.form.Button"` 变成`data-dojo-type="dijit/form/Button"`。
 
-上面提到的引入 `dojo/Evented` and `dojo/Stateful` 的概念变化在 "watch" 和"on" 的功能上已经赶上了尚明脚本和添加合适的脚本类型。例如，现在你可以这么做：
+上面提到的引入 `dojo/Evented` 和 `dojo/Stateful` 的相关概念变化在 "watch" 和"on" 的功能上已经赶上了尚明脚本和添加合适的脚本类型。例如，现在你可以这么做：
 
 ```
   <button data-dojo-type="dijit/form/Button" type="button">
@@ -471,6 +474,7 @@ Dijit 也在新Dojo作出了改变，不过随着功能被打破到离散的构�
     </script>
   </button>
 ```
+>[View Demo](https://dojotoolkit.org/documentation/tutorials/1.10/modern_dojo/demo/modern_dojo-parser.html)
 
 另外，解析器也支持 `dojo/aspect` 引入的概念，你可以向 "before"、"after" 和"around" advice加入代码。更多见 [dojo\/parser](https://dojotoolkit.org/reference-guide/1.10/dojo/parser.html#changing-the-behavior-of-a-method) 。
 
