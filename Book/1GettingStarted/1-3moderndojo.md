@@ -460,7 +460,7 @@ Dijit 也在“新一代”Dojo作出了改变，不过随着功能被打破到�
 
 > Dojo 支持在 `data-dojo-type` 里使用模块ID（MID），例如 `dojoType="dijit.form.Button"` 变成`data-dojo-type="dijit/form/Button"`。
 
-上面提到的引入 `dojo/Evented` 和 `dojo/Stateful` 的相关概念变化在 "watch" 和"on" 的功能上已经赶上了尚明脚本和添加合适的脚本类型。例如，现在你可以这么做：
+对于上面提到引入的`dojo/Evented` 和 `dojo/Stateful` 的相关概念，解析器也和声明式脚本保持同步，并且添加了合适的脚本类型来复制“watch”和“on”的功能。
 
 ```
   <button data-dojo-type="dijit/form/Button" type="button">
@@ -476,19 +476,19 @@ Dijit 也在“新一代”Dojo作出了改变，不过随着功能被打破到�
 ```
 >[View Demo](https://dojotoolkit.org/documentation/tutorials/1.10/modern_dojo/demo/modern_dojo-parser.html)
 
-另外，解析器也支持 `dojo/aspect` 引入的概念，你可以向 "before"、"after" 和"around" advice加入代码。更多见 [dojo\/parser](https://dojotoolkit.org/reference-guide/1.10/dojo/parser.html#changing-the-behavior-of-a-method) 。
+另外，解析器也支持 `dojo/aspect` 引入的概念，你可以向 "before"、"after" 和"around" advice提供代码。更多见 [dojo/parser](https://dojotoolkit.org/reference-guide/1.10/dojo/parser.html#changing-the-behavior-of-a-method) 。
 
 > `dojo/parser` 也支持模块的 auto-requiring 。就是说你没必要在模块调用前引入它。不过如果把 `isDebug` 设为true，你这么引入模块会出现警告。
 
 ## Builder
 
-最后再简单提下 Dojo builder，它在 Dojo 1.7 里完全重写了。一方面是随着AMD的显著变化，同时它也被设计的更加现代化和富于特色。这里不多说，详见 [Creating Builds](https://dojotoolkit.org/documentation/tutorials/1.10/build/) ，不过为了拥抱新的 builder 请忘记你对旧builder 的一切印象。
+最后再简单提下 Dojo builder，它在 Dojo 1.7 里完全重写了。一方面是处理AMD的显著变化，同时它也被设计的更加现代化和富于特征。这里不多说，详见 [Creating Builds](https://dojotoolkit.org/documentation/tutorials/1.10/build/) ，不过为了拥抱“新一代” builder 请准备好忘记你对旧builder 的一切印象。
 
 ## 小结
 
-希望你经历了一场有意思的新Dojo旅程。任何熟悉旧款的人在新世界里重新开始思考都需要花点时间，一旦你开动了，就很难再回去，而且你会发现对于应用有了更加结构化的方法。
+希望你在“新一代”Dojo的世界里经历了一场有意思的旅程。任何熟悉旧世界的人在要新世界里重新开始思考都需要花点时间，一旦你开动了，就很难再回去，而且你会发现对于应用你有了更多结构化的方法。
 
-总之，记得新Dojo的方式是：
+总之，记得“新一代”Dojo的方式是：
 
 * **粒度相关和模块化**——只require你需要的。为了更快、更智能、更安全的应用。
 
@@ -496,13 +496,13 @@ Dijit 也在“新一代”Dojo作出了改变，不过随着功能被打破到�
 
 * **全局作用域很糟**——再来一次，我再也不用 全局作用域 了。
 
-* **离散访问器**——一个函数只做一件事，尤其是对于访问器。为你准备了 `get()` 和 `set()` 。
+* **分离存取器**——一个函数只做一件事，尤其是对于存取器。这里为你准备了 `get()` 和 `set()` 。
 
-* **Dojo补充 ES5 **—— EcmaScript 5 做的，Dojo不做。
+* **Dojo补充 ES5 **—— EcmaScript 5 做的（并且它是可垫式的），Dojo不做。
 
-* **Events and Advice,not Connections**——Dojo正从通用连接转向时间和面向方面编程。
+* **Events and Advice,not Connections**——Dojo正从通用连接转向关注事件和面向方面编程。
 
-* **Builder 大有不同了**——变得更加强大和富有特色，但是它只会更加彰显旧应用的设计缺陷，而不是修复它们。
+* **Builder 大有不同了**——变得更加强大和富于特征，但是它只会更加彰显旧应用的设计缺陷，而不是修复它们。
 
 祝好运。
 
