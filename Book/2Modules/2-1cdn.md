@@ -11,7 +11,7 @@
 
 经过对CDN库使用研究表明（如相关文章[你是否应该使用JavaScript库的CDN？](http://zoompf.com/blog/2010/01/should-you-use-javascript-library-cdns)），使用CDN通常比本地脚本性能上要差很多，尤其是本地脚本可以通过内置层来显著减少HTTP往返。如果你想用CDN库来提高应用性能，最好还是仔细想想。
 
-## 加载自己的模块
+## 加载我们的模块
 开始先来一个简单页面，它包含了源于CDN的Dojo加载器：
 
 ```
