@@ -1,4 +1,8 @@
 #2.2 AMD模块入门
+原文地址：https://dojotoolkit.org/documentation/tutorials/1.10/modules/index.html
+本翻译GitBook地址：https://www.gitbook.com/book/limeng1900/dojo1-11-tutorials-translation-in-chinese/details
+
+----------
 
 Dojo支持模块以异步模块定义（AMD）的格式编写，这样让代码更容易编写和调试。在本教程中，我们将解释对AMD的基本理解和使用。
 
@@ -129,10 +133,11 @@ require([
 在你用Dojo开发之前首先要熟悉的主题之一是AMD，另一个重要功能就是`declare `，如果你还没有熟悉 `dojo/_base/declare` ，接下来可以先看看它的[教程](https://dojotoolkit.org/documentation/tutorials/1.10/declare/)。
 
 ## 使用插件
-除了常规模块，AMD加载器还有一种称为插件的新模块。插件通过其超越简单AMD模块的功能对加载器进行扩展。插件的加载或多或少与常规模块一样，不过在模块标识符的末尾使用一个特殊符号“!”来标识它是一个插件请求。“！”之后的数据会直接传递给插件来处理。通过几个例子来学习会比较清楚点。Dojo提供几个默认插件，最重要的四个是` dojo/text` 、`dojo/i18n`、`dojo/has`、和`dojo/domReady` 。让我们来看看如何使用它们。
+除了常规模块，AMD加载器还有一种被称为插件的新型模块。插件用来对加载器进行扩展，它有一些超出简单AMD模块的功能。插件的加载或多或少与常规模块一样，不过在模块标识符的末尾使用一个特殊符号“!”来标识它是一个插件请求。“！”后面的数据会直接传递给插件来处理。通过几个例子来了解会比较清楚。Dojo提供几个默认插件，最重要的四个是` dojo/text` 、`dojo/i18n`、`dojo/has`、和`dojo/domReady` 。让我们来看看如何使用它们。
 
 ### [dojo/text](https://dojotoolkit.org/reference-guide/1.10/dojo/text.html)
-当你需要中文件（比如HTML模板）加载字符串的时候可以使用`dojo/text`。 获取的值会被缓存起来，这样后面再调用同一文件的时候就不会再额外进行请求。生成器使用`dojo/text`加载内联字符串。例如为一个模板化的widget加载一个模板，你要像这样定义你的模块：
+
+当你需要从文件（比如HTML模板）加载字符串的时候可以使用`dojo/text`。 获取的值会被缓存起来，这样后面再调用同一文件的时候就不会再额外进行请求。比如：builder会使用`dojo/text`来加载内联字符串。例如为一个模板widget加载模板时，你要像这样定义你的模块：
 
 ```
 // in "my/widget/NavBar.js"
@@ -150,7 +155,8 @@ define([
 
 ```
 ### [dojo/i18n](https://dojotoolkit.org/reference-guide/1.10/dojo/i18n.html)
-`dojo/i18n` 根据web浏览器的用户语言环境加载语言包。示例：
+
+`dojo/i18n` 根据web浏览器的用户语言环境加载语言资源包。示例：
 
 ```
 // in "my/widget/Dialog.js"
@@ -164,10 +170,11 @@ define([
     });
 });
 ```
+
 如何使用 `i18n` 的更多信息见 [internationalization tutorial](https://dojotoolkit.org/documentation/tutorials/1.10/i18n/)。
 
 ### [dojo/has](https://dojotoolkit.org/reference-guide/1.10/dojo/has.html)
-Dojo加载器包含一个has.js实现的API特征检测器；`dojo/has` 插件利用此功能有条件的加载模块。像下面这么用：
+Dojo加载器包含一个[has.js](https://github.com/phiggins42/has.js)特征检测API的实现；`dojo/has` 插件利用此功能进行有条件地加载模块。像下面这么用：
 
 ```
 // in "my/events.js"
@@ -175,7 +182,7 @@ define([
     "dojo/dom",
     "dojo/has!dom-addeventlistener?./events/w3c:./events/ie"
 ], function(dom, events){
-    // events is "my/events/w3c" if the "dom-addeventlistener" test was true, "my/events/ie" otherwise
+    // events is "my/events/w3c" ，如果 "dom-addeventlistener" 测试为 true,events 就是 "my/events/w3c"，否则就是"my/events/ie" 
     events.addEvent(dom.byId("foo"), "click", function(){
         console.log("Foo clicked!");
     });
@@ -183,22 +190,25 @@ define([
 
 ```
 ### [dojo/domReady](https://dojotoolkit.org/reference-guide/1.10/dojo/domReady.html)
-dojo/domReady用来替代` dojo.ready`。它是直到DOM准备好才运行的模块。像下面这么用：
+
+dojo/domReady用来替代` dojo.ready`。它是在DOM准备好之后才运行的模块。像下面这么用：
 
 ```
 // in "my/app.js"
 define(["dojo/dom", "dojo/domReady!"], function(dom){
-    // This function does not execute until the DOM is ready
+    // 在DOM准备好之前这个函数不会运行
     dom.byId("someElement");
 });
 ```
-注意在回调函数里没有定义参数来返回dojo/domReady的值。因为返回值没有什么作用，我们只是用它来延迟回调。由于模块的本地变量名称取决于模块之间的顺序，不使用返回值的加载模块或插件应放在require依赖关系列表的末尾。
-即使没有数据传递给插件，感叹号还是必须的。没有它，你就只会将dojo/domReady模块作为一个依赖加载，而不是激活它的特殊插件功能。
+
+注意在回调函数里没有定义参数来返回dojo/domReady的值。因为我们没有用到返回值，我们只是用它来延迟回调。由于模块的本地变量名称依赖于模块之间的顺序，不使用返回值的加载模块或插件应放在require依赖关系列表的末尾。
+
+即使没有数据传递给插件，感叹号还是必须的。没有它，你就只会将dojo/domReady模块作为一个依赖加载，而不会激活它的特殊插件功能。
 
 ## 小结
-本教程提供的对AMD的基本理解将带你入门Dojo开发，但你很快会发现自己陷入了更复杂的情况。阅读[Advanced AMD Usage](https://dojotoolkit.org/documentation/tutorials/1.10/modules_advanced/) 教程来了解更多：
+本教程提供对AMD的基本理解，它将带你入门Dojo开发，但你很快会发现自己陷入了更复杂的情况。阅读[Advanced AMD Usage](https://dojotoolkit.org/documentation/tutorials/1.10/modules_advanced/) 教程来了解更多：
 
- - 加载器和库位于不同的位置甚至服务时如何配置加载器
+ - 加载器和库位于不同的位置甚至不同的服务器时如何配置加载器
  - 创建便携式模块的包
  - 加载同一模块或库的多个版本
  - 加载非AMD代码

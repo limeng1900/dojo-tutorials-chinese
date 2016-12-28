@@ -9,7 +9,7 @@
     * [1.4 新一代Dojo](Book/1GettingStarted/1-3moderndojo.md)
 * [2 模块](Book/2Modules/2modules.md)
     * [2.1 CDN](Book/2Modules/2-1cdn.md)
-    * [2.2AMD模块入门](Book/2Modules/2-2amdmo_kuai_ru_men.md)
+    * [2.2 AMD模块入门](Book/2Modules/2-2amdmo_kuai_ru_men.md)
     * [2.3AMD使用进阶](Book/2Modules/2-3amdshi_yong_jin_jie.md)
     * [2.4Dojo和Node.js](Book/2Modules/2-4dojoandnodejs.md)
 * [3 DOM基础](Book/3DOMBasics/3dombasics.md)
