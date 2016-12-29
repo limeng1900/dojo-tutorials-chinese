@@ -390,7 +390,7 @@ require([
 > [View Demo](https://dojotoolkit.org/documentation/tutorials/1.10/modules_advanced/demo/exports.html)
 这次加载运行"index.html"时发生的是：
 
- 1.  解析传递给require的依赖项（在`index.html`里）：`moduleA` 
+ 1.  解析传递给`require`的依赖项（在`index.html`里）：`moduleA` 
  2.  解析`moduleA` 的依赖项：`moduleB`
  3.  解析`moduleB` 的依赖项：`moduleA` 
  4.  检测到程序试图解析`moduleA` 
@@ -401,7 +401,7 @@ require([
  9.  在解析将“exports”列为依赖项的模块之后，加载器对模块的引用不在指向工厂函数的返回值。相反，加载器假设模块在创建的作为占位符的空对象上设置了一些必要属性，并将它作为`exports`参数传递工厂函数。
  10. 执行`moduleA.print`，由于`moduleB` 拥有一个指向`moduleA` 填充对象的有效引用，当它调用`moduleA.getValue` 时就可以像预期的那样执行。
 
-重要的是要记住，虽然使用exports提供一个最终有效的引用，但是在依赖模块（moduleB）解析的时候它仍然是一个空对象。当你的工厂函数（moduleB的）执行时，它接收到指向一个空对象（moduleA）的引用。只有在循环依赖完全解析之后（moduleA临时解析为{ }，moduleB 解析，然后moduleA完全解析），对象添加模块（moduleA）的方法和属性，然后才可以用在你的（moduleB的）工厂函数的函数定义，最后被调用。下面的代码演示了这种差别：
+重要的是要记住，虽然使用exports提供一个最终有效的引用，但是在依赖模块（moduleB）解析的时候它仍然是一个空对象。当你的工厂函数（moduleB的）执行时，它接收到指向一个空对象（moduleA）的引用。只有在循环依赖完全解析之后（moduleA临时解析为{ }，moduleB 解析，然后moduleA完全解析），对象添加模块（moduleA）的方法和属性，然后才可以用在你的（moduleB的）工厂函数的函数定义，随后被调用。下面的代码演示了这种差别：
 
 ```
 // in "my/moduleA.js"
@@ -420,8 +420,7 @@ define([ "./moduleB", "exports" ], function(moduleB, exports){
 
 // in "my/moduleB.js"
 define([ "./moduleA" ], function(moduleA){
-    // this code will run at resolution time, when the reference to
-    // moduleA is an empty object, so moduleA.isValid will be undefined
+    // 这个代码将在解析时运行，当指向moduleA的引用是一个空对象时，moduleA.isValid将是undifined
     if(moduleA.isValid){
         return {
             getValue: function(){
@@ -430,10 +429,8 @@ define([ "./moduleA" ], function(moduleA){
         };
     }
 
-    // this code returns an object with a method that references moduleA
-    // the "getValue" method won't be called until after moduleA has
-    // actually been resolved, and since it uses exports, the "getValue"
-    // method will be available
+    // 这个代码返回一个对象，该对象有一个方法引用moduleA
+    // “getValue”方法在moduleA实际解析之前不会被调用，由于它使用exports，“getValue”方法将是可用的
     return {
         getValue: function(){
             return "apples and " + moduleA.getValue();
@@ -451,15 +448,17 @@ require([
 > [View Demo](https://dojotoolkit.org/documentation/tutorials/1.10/modules_advanced/demo/exports2.html)
 
 ## 加载非AMD代码
-在模块标识符部分提到过，AMD加载器也可以通过将JavaScript文件的路径作为标识符传递来加载非AMD代码。加载器这些同属标识符的三种方式：
+在模块标识符部分提到过，AMD加载器也可以通过将JavaScript文件的路径作为标识符传递来加载非AMD代码。加载器通过以下三种方式之一识别这些特殊标识符：
 
  - 以“/”开头的标识符
+ 
  - 以协议（如“http：”、“https：”）开头的标识符
+ 
  - 以“.js”结尾的标识符
 
-当任意代码作为模块加载的时候，模块的解析值为`undefined` ，你需要直接访问定义为全局脚本的代码。
+当任意代码作为模块加载的时候，模块的解析值为`undefined` ，你需要直接访问被脚本全局定义的代码。
 
-Dojo加载器的一个专属特性是混搭旧Dojo模块和AMD风格模块的能力。这让它可以稳步有序地从旧的代码库转换到AMD代码库，而不是立马改变所有的代码。加载器在同步和异步模式下都可以这样。异步模式下，旧模块的解析值是全局作用域里的对象，这个对象对应`dojo.provide` 调用文件的脚本的解析值。例如：
+Dojo加载器的一个专属特性是混搭旧Dojo模块和AMD风格模块的能力。这让它可以稳步有序地从旧的代码库转换到AMD代码库，而不是立马改变所有的代码。加载器在同步和异步模式下都可以这样工作。异步模式下，旧模块的解析值是全局作用域里的对象，这个对象对应文件的第一次`dojo.provide` 调用（一旦脚本完成解析）。例如：
 
 ```
 // in "my/legacyModule.js"
@@ -471,7 +470,7 @@ my.legacyModule = {
 当使用`require(["my/legacyModule"])`通过AMD加载器加载这个代码时，分配给`my.legacyModule`的对象将作为这个模块的解析值。
 
 ##服务器端JavaScript
-新AMD加载器的最后一个特性时能够在服务器端加载JavaScript使用node.js or Rhino。如下通过命令行加载Dojo：
+新AMD加载器的最后一个特性时能够在服务器端加载JavaScript使用[node.js](http://nodejs.org/) 或 [Rhino](https://www.mozilla.org/rhino/)。如下通过命令行加载Dojo：
 
 ```
 # node.js:
@@ -480,8 +479,9 @@ node path/to/dojo.js load=my/serverConfig load=my/app
 # rhino:
 java -jar rhino.jar path/to/dojo.js load=my/serverConfig load=my/app
 ```
-更多细节见 [Dojo and Node.js](https://dojotoolkit.org/documentation/tutorials/1.10/node) 。
-一个加载器准备完毕，每个`load=`参数都会向自动解析的依赖项列表里添加一个模块。在浏览器里，同样的代码是这样的：
+更多细节见 [Dojo and Node.js](https://dojotoolkit.org/documentation/tutorials/1.10/node)教程 。
+
+一个加载器准备完毕，每个`load=`参数都会向自动解析的依赖项列表里添加一个模块。在浏览器里，等价的代码是这样的：
 
 ```
 <script data-dojo-config="async: true" src="path/to/dojo.js"></script>
