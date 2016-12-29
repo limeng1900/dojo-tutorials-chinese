@@ -1,13 +1,15 @@
 #2.3 AMD使用进阶
 
 原文地址：https://dojotoolkit.org/documentation/tutorials/1.10/modules_advanced/index.html
-碎梦道翻译，转载请注明出处。
+本翻译GitBook地址：https://www.gitbook.com/book/limeng1900/dojo1-11-tutorials-translation-in-chinese/details
 
 ----------
 
-Dojo现在支持以异步模块定义格式来编写模块，从而使代码更容易编写和调试。本教程中，我们将全面了解这个新模块格式并探索如何用它来编写一个应用。
-> 本教程是 [Introduction to AMD](https://dojotoolkit.org/documentation/tutorials/1.10/modules/)的后续，所以请先确认已理解AMD基础。
-本教程中，我们将涉及一个假设的应用，它的文件系统结构如下：
+Dojo现在支持以异步模块定义（AMD）格式来编写模块，从而更容易编写和调试代码。本教程中，我们将全面了解这个新模块格式并探索如何用它来编写一个应用。
+
+> 本教程是 [Introduction to AMD](https://dojotoolkit.org/documentation/tutorials/1.10/modules/)的后续，所以请先确认你已理解AMD基础。
+
+本教程中，我们将涉及一个假想的应用，它的文件系统结构如下：
 
 ```
 /
@@ -25,11 +27,15 @@ Dojo现在支持以异步模块定义格式来编写模块，从而使代码更�
 ## 深入require
 `require` 函数接受以下参数：
 
- 1.  配置（可选，default=undefined）：一个带加载器配置选项的对象——允许你在运行时重新配置加载器。
- 2.  依赖关系（可选，default=[]）：模块标识符的数组。指定的模块会在你的代码生成之前解析 。它们会按照列出的顺序加载，并且按顺序以参数的方式传递给你的回调函数。
- 3.  回调：包含你想要运行的代码的一个函数，这个函数依赖于依赖关系里的模块。你需要将你的代码包裹在回调函数里以支持异步加载和使用模块的非全局引用。
-> 配置参数可以省略，但是必须加上空的占位符。
-接下来将涉及加载器配置的更多细节；现在有一个使用配置参数的`require` ：
+ 1.  配置（可选，default=undefined）：一个带加载器配置选项的对象——它可以让你在运行时重新配置加载器。
+ 
+ 2.  依赖关系（可选，default=[]）：一个模块标识符的数组。指定的模块会在你的代码生成之前解析 。它们会按照列出的顺序加载，并且按顺序以参数的方式传递给你的回调函数。
+ 
+ 3.  回调：包含你想要运行的代码的一个函数，这个函数依赖于依赖关系里的模块。你需要将你的代码包裹在回调函数里以支持异步加载和对这些模块使用非全局的引用。
+ 
+> 配置参数可以省略，不需要加上空的占位符。
+
+接下来将涉及加载器配置的更多细节；现在有一个使用配置参数的`require`：
 
 ```
 require({
@@ -40,17 +46,21 @@ require({
     ]
 }, [ "my/app" ]);
 ```
-这里我们略微修改配置信息让dojo包指向Google CDN。跨域加载支持隐含在AMD格式里。
->  请注意不不是所有的配置选项可以在运行时配置。尤其是一旦加载器加载完成，` async` 、`tlmSiblingOfDojo`和已有的`has`测试不能改变。此外，大部分的配置数据是浅拷贝，就是说你不能使用这种机制，例如向自定义配置对象添加更多的键值——对象将被覆盖。
+
+这里我们略微修改配置信息让`dojo`包指向Google CDN。跨域加载支持隐含在AMD格式里。
+
+>  请注意不是所有的配置选项可以在运行时配置。尤其是` async` 、`tlmSiblingOfDojo`和已有的`has`测试，一旦加载器加载完成它们就不能改变。此外，大部分的配置数据是浅拷贝，就是说你不能使用这种机制，例如向自定义配置对象添加更多的键值——对象将被覆盖。
 
 ## 深入define
-`define` 函数接受以下参数：
+`define` 函数接收以下参数：
 
- 1. moduleId （可选，default=undefined）：一个模块标识符。这个参数很大程度上是早期AMD加载器的历史遗留或为支持 pre-AMD Dojo，不应该提供它。
- 2.  dependencies （可选，default=[]）：是你模块依赖关系的模块标识符的一个数组。如果指定它，这些模块将在你的模块解析之前生成，它们将按顺序以参数的方式传递给你的工厂函数。
- 3.  factory：你模块的值，或者将返回值的工厂函数。
-重要的是要记住，在定义模块的时候，工厂函数只调用一次——返回值会被加载器缓存。在实践层面，这意味着模块可以通过加载相同的模块很容易地共享对象（类似其他语言的静态属性）。
-在定义模块的时候，值可以用一个简单的对象：
+ 1. moduleId （可选，default=undefined）：一个模块标识符。这个参数很大程度上是早期AMD加载器的历史遗留或为支持 pre-AMD Dojo，**不应该提供它**。
+ 2.  dependencies （可选，default=[]）：是你模块依赖关系的模块标识符的一个数组。如果指定它，这些模块将在你的模块求值之前解析，它们将作为参数按顺序传递给你的工厂函数。
+ 3.  factory：你模块的值，或者一个将返回值的工厂函数。
+ 
+重要的是要记住，在定义模块的时候，工厂函数只调用一次——返回值会被加载器缓存。在实践层面，这意味着模块可以通过加载相同的模块轻易地共享对象（类似其他语言的静态属性）。
+
+在定义模块的时候，值可以是一个简单的对象：
 
 ```
 // in "my/nls/common.js"
@@ -59,17 +69,20 @@ define({
     howAreYou: "How are you?"
 });
 ```
-请记住，如果你不使用工厂函数定义模块。你将无法引用任何依赖关系，所以这种类型定义是罕见的，所以这种定义的类型是很少见的，通常只有被用在i18n绑定或者简单配置对象。
+请记住，如果你不使用工厂函数定义模块。你将无法引用任何依赖关系，所以上面这种定义的类型是很少见的，通常只有被用在i18n绑定或者简单配置对象。
 
 ##加载器如何工作？
 当你调用`require` 来加载模块，加载器会找到模块的代码然后将它当做一个参数传递给你的回调函数，这样你就可以使用这些模块了。
 
  1.  首先加载器要先解决你传递的模块标识符。这涉及到将模块标识符和`baseUrl` 联系起来，还要考虑加载的其他配置选项的修改，比如`map`(稍后讨论更多细节)。
- 2.  此时加载器拥有模块的URL并且可以通过在页面上创建一个新的`script` 元素来加载真实文件和将`src` 属性设置为模块的URL。
- 3.  一旦文件被加载并解析，它将设置为模块的值。
- 4.  加载器会保留每个模块的引用，因此在下次请求该模块时，加载器会返回已经存在的引用。
+ 
+ 2.  此时加载器拥有了模块的URL并且可以加载实际的文件，只需要通过在页面上创建一个新的`script` 元素来并将其`src`属性设置为模块的URL。
+ 
+ 3.  一旦文件被加载并解析，其结果将被设为模块的值。
+ 
+ 4.  加载器会保留每个模块的引用，在下次请求该模块时，加载器会返回已经存在的引用。
 
-当加载一个AMD模块的时候，代码被插入到页面里一个新的`sceipt` 元素，然后会调用`define` 函数。在加载传递给`define` 的任何依赖模块时，都会经过上面同样的处理过程，然后将加载器对模块的引用设置为你传递给`define` 的工厂函数的返回值。（如果你向`define` 传递一个值，而不是函数，加载器对你的模块的引用将设为该值。）
+当一个AMD模块加载完成时，代码被插入到页面里一个新的`script`元素，然后调用`define` 函数。在加载传递给`define` 的任何依赖模块时，都会经过上面同样的处理过程，然后将加载器对模块的引用设置为你传递给`define` 的工厂函数的返回值。（如果你向`define` 传递一个值，而不是函数，加载器对你的模块的引用将被设为该值。）
 
 ## 配置加载器
 因为遗留的兼容性原因，Dojo的加载器默认为同步模式。为了实现异步，我们需要进行显式的配置。通过将`async` 属性配置为`true` ：
@@ -77,6 +90,7 @@ define({
 ```
 <script data-dojo-config="async: true" src="js/lib/dojo/dojo.js"></script>
 ```
+
 你要习惯把开启异步作为标准做法——只有你知道你需要同步行为的时候再关闭它。接下来要做的是将模块的位置信息配置给加载器：
 
 ```
@@ -98,9 +112,9 @@ var dojoConfig = {
 ```
 /js/my/widget/Person.js
 ```
-我们可以在文件系统里方便的在任何地方存放我们的文件（在本例中，“js”文件夹），并且只使用模块id相关的部分路径。比如我们不需要`require(["js/my/widget/Person"])`，只要更简单的`require(["my/widget/Person"])`。因为在实际加载资源文件的时候，我们将“/js/”配置为所有模块id的预先基础。
+我们可以在文件系统里方便的在任何地方存放我们的文件（在本例中，“js”文件夹），并且只使用模块id相关的部分路径。比如我们不需要`require(["js/my/widget/Person"])`，用`require(["my/widget/Person"])`更加简单。因为在实际加载资源文件的时候，我们将“/js/”配置为所有模块id的基础预设。
 
- - `tlmSiblingOfDojo` (default = true):默认情况下，加载器会希望从加载器所在文件夹的兄弟文件夹来查找模块（记住，在Dojo中当你的script元素加载`dojo.js`时，就加载了加载器）。如果你的文件结构像下面这样：
+ - `tlmSiblingOfDojo` (default = true):默认情况下，加载器会希望从加载器来源文件夹的兄弟文件夹来查找模块（记住，在Dojo中当你的script元素加载`dojo.js`时，就加载了加载器）。如果你的文件结构像下面这样：
 ```
 /
     js/
@@ -110,17 +124,22 @@ var dojoConfig = {
         my/
         util/
 ```
-这样你就不需要配置`baseUrl` 或者 `tlmSiblingOfDojo`，你的最高级模块是`dojo.js` 所在文件夹的兄弟文件夹，所以`tlmSiblingOfDojo` 就是true。
+这样你就不需要配置`baseUrl` 或者 `tlmSiblingOfDojo`，你的最高级模块都是`dojo.js` 所在文件夹的兄弟文件夹，所以`tlmSiblingOfDojo` 就是true。
 
- - packages：一个包配置对象的数组。在最基本的层面上，包只是模块的简单集合。dojo， dijit和dojox都是包的范例。不像在一个目录里的一个简单模块集合，packages充满了一些额外功能，它显著提高了模块的可移植性和易用性。一个便携包是自包含的，也可以通过cpm这样的工具安装。你可以配置一个包以下项：
+ - packages：一个包配置对象的数组。在最基本的层面上，包是模块的简单集合。dojo， dijit和dojox都是包的范例。不像放在一个目录里下一个简单模块集合，packages还有一些额外功能，它能显著提高模块的可移植性和易用性。一个便携包是独立的，也可以通过[cpm](https://github.com/kriszyp/cpm)这样的工具安装。你可以指定一个包的以下各项：
+     
      - name：包的名字，应该和包含该模块的文件名一致。
+     
      - location：包的位置；可以是相对于`baseUrl` 的路径或者一个绝对路径。相比"lib/dojo/dom" ，我们更希望从  "dojo/dom"来加载模块（再看一眼本教程开头的文件结构）。所以我们将`location` 属性指定为"lib/dojo"。就是说尝试加载 "dojo/dom"模块的加载器会加载 "/js/lib/dojo/dom.js" 文件（记住，因为` baseUrl` 里预设了“js”）。
+     
      - main（可选，default=main.js）:当试图require包本身时，用来加载正确的模块。例如，如果你想要require“dojo”，实际加载的文件是"/js/dojo/main.js"。由于我们已经为“my”包重写了这个属性，如果require“my”，实际会加载"/js/my/app.js"。
 
-> 如果我们尝试require一个没有定义的包"util"，加载器会试着加载"/js/util.js"。你应该总在加载器配置里定义你全部的包。
+> 如果我们尝试require "util"，它是一个还没有定义的包，加载器会试着加载"/js/util.js"。你应该每次都在加载器配置里定义你全部的包。
 
 ## 使用便携模块
-新AMD加载器的一个最重要的特性是能够创建完全的便携包。例如，如果你有一个应用需要用到两个不同版本Dojo中的模块，新加载器就非常方便。
+
+新AMD加载器的一个最重要的特性是能够创建完全的便携包。例如，如果你有一个应用需要用到Dojo的两个不同版本中的模块，新加载器就非常方便。
+
 假设你有一个建立在旧版本Dojo上的应用，你想要更新到最新的1.10版本，但是Dojo有一些更新导致你的旧代码无法使用。在为旧代码使用旧版Dojo的同时，你可以将新代码升级到当前Dojo的发布版本。这可以通过`map`  配置属性完成：
 
 ```
@@ -147,15 +166,22 @@ dojoConfig = {
 这里发生了什么？
 
  - （3-5行）首先定义了三个包，它们指向包含旧版Dojo的文件夹。
+ 
  - （6-8行）接下来定义三个当前发行版本的包。
+ 
  - （9-10行）为旧代码和当前代码定义包
+ 
  - （12-18行）定义一个`map` 配置：它将应用到 "myOldApp"模块，并且将模块对 "dojo"、"dijit"和"dojox" 包的请求分别映射到"dojo16"、"dijit16"和"dojox16"。
+ 
  - 来源于“my“包的模块将从当前Dojo发行版本的 dojo、 dijit、 dojox加载模块。
+
 你可以从 [AMD Configuration documentation](https://github.com/amdjs/amdjs-api/wiki/Common-Config#map-) 获得更多关于`map` 的信息。
-如果你已经很熟悉加载器，特别是 `packageMap` 属性，它已经弃用了，`map` 是更先进的配置选项。
+
+如果你已经很熟悉加载器，特别是 `packageMap` 属性，请注意它已经弃用了，更先进的配置选项是`map` 。
 
 ## 编写便携模块
-你可以（也应该）确保的是，你创建的包内部的模块总是从相同的包里加载文件，通过用**相对** 的模块标识符指定依赖关系。下面给出在“my”包里的模块的代码：
+
+你可以（也应该）确保的是，你创建的包内部的模块总是从该包内部加载文件，通过用**相对** 的模块标识符指定依赖关系。下面给出在“my”包里的模块的代码：
 
 ```
 // in "my/widget/NavBar.js"
@@ -182,9 +208,12 @@ define([
 相对于"my/widget/NavBar"：
 
  - "dojo/dom"在一个分离的包里，所以使用全的标识符
+ 
  - "my/otherModule"在上一级目录，所以使用“../”
+ 
  - "my/widget/InfoBox"在同一目录，所以使用"./"
     > 如果你只指定"InfoBox"，它会将其理解为一个包的名字，所以标识符必须以"./"开头。
+
 > 记住相对标识符只能用来引用同一个包里的模块。相对模块id也只在定义模块时有效，在传递给`require` 的依赖列表中是不起作用的。
 
 考虑相对标识符对同一个包的作用，再回头看`map` 的例子是不是发现了一些问题？为了简单起见，我们把重点放在让你的应用一部分使用旧版Dojo而另一部分用当前版本的实现上。但是，我们漏掉了一些重要的东西，Dijit依赖于Dojo，DojoX 又同时依赖于Dojo和Dijit。下面的配置将确保这些依赖项正确解析。为了安全起见，将Dojo包映射到他们自己 (`map: { dojo16: { dojo: "dojo16" } }`)，以防止任何模块无法使用相对标识符。
@@ -233,7 +262,7 @@ define([
     });
 });
 ```
-不过，为了完全便携，"my/debug/console"需要变成一个相对标识符。单改变它的话不起作用，因为` require ` 调用的时候丢失了原始模块的上下文。为了解决这个问题，Dojo加载器提供一个叫做**上下文相关require（context-sensitive require）**的功能。在你初始化`define` 时，将特殊标识符“require”作为依赖项传递来实现它：
+不过，为了变的完全便携，"my/debug/console"需要变成一个相对标识符。单改变它的话不起作用，因为` require ` 调用的时候丢失了原始模块的上下文。为了解决这个问题，Dojo加载器提供一个叫做**上下文相关require（context-sensitive require）**的功能。在你初始化`define` 时，将特殊标识符“require”作为依赖项传递来实现它：
 
 ```
 // in "my/debug.js"
@@ -250,9 +279,10 @@ define([
     });
 });
 ```
-现在，内部的`require` 使用局部绑定、上下文相关的`require` 函数，所以我们能够相对于“my/debug”安全的require模块。
+现在，内部的`require` 使用局部绑定、上下文相关的`require` 函数，所以我们能够相对于“my/debug”来安全地require模块。
 > `require` 的上下文是怎么消失的？
 >  记住`require` 是一个全局定义的函数。当click时间的处理器执行时，它唯一从模块获得的上下文是局部定义的。它并不知道自己定义在什么模块里。在本地作用域没有“require”，所以将调用全局的“require”。回想本教程自始至终的文件结构，如果我们传递 "./debug/console"给`require` ，它将尝试加载并不存在的"/js/debug/console.js"文件。通过使用上下文相关的`require` ，我们拥有一个改进的`require` 的本地引用，它可以保持模块的上下文，所以能正确的加载"/js/my/debug/console.js"。
+
 上下文相关的`require`在模块加载资源（images, templates, CSS）时也非常有用。先给出以下文件结构：
 
 ```
@@ -272,14 +302,14 @@ define([
     "dojo/dom",
     "require"
 ], function(dom, require){
-    // assume DOM structure where #infoBoxImage is an img element
+    // 假设 DOM 结构中#infoBoxImage 是一个 img 元素
     dom.byId("infoBoxImage").src = require.toUrl("./images/info.png");
 });
 
 ```
 
 ## 处理循环依赖项
-你编程的时候偶尔会碰到这样的情况，两个模块之间互相引用，而这种引用形成了一个循环依赖。为了解决这样的循环依赖，加载器优先解析递归模块。例如，下面的例子：
+你编程的时候偶尔会碰到这样的情况，两个模块之间互相引用，而这种引用形成了一个循环依赖。为了解决这样的循环依赖，加载器优先解决第一个递归的模块。例如下面的例子：
 
 ```
 // in "my/moduleA.js"
@@ -290,7 +320,7 @@ define([ "./moduleB" ], function(moduleB){
         },
 
         print: function(){
-            // dependency on moduleB
+            // 依赖 moduleB
             log(moduleB.getValue());
         }
     };
@@ -300,7 +330,7 @@ define([ "./moduleB" ], function(moduleB){
 define([ "./moduleA" ], function(moduleA){
     return {
         getValue: function(){
-            // dependency on moduleA
+            // 依赖 moduleA
             return "apples and " + moduleA.getValue();
         }
     };
@@ -314,6 +344,7 @@ require([
 });
 ```
 >[View Demo](https://dojotoolkit.org/documentation/tutorials/1.10/modules_advanced/demo/circular.html)
+
 它看起来应该print "apples and oranges"，但是却出现了` moduleB: Object has no method 'getValue'` 的错误。下面看下当你加载和运行“index.html”时，加载器做了什么：
 
  1.  解析传递给require的依赖项（在`index.html`里）：`moduleA` 
@@ -382,7 +413,7 @@ define([ "./moduleB", "exports" ], function(moduleB, exports){
     };
 
     exports.print = function(){
-        // dependency on moduleB
+        // 依赖 moduleB
         log(moduleB.getValue());
     }
 });
