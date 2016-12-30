@@ -24,4 +24,4 @@
 - 2.3 AMD模块进阶 一校完成  **resolve和evaluate的翻译需要斟酌**
 
 **2016-12-30：**
-- 2.3 Dojo和Node.js 一校完成 
+- 2.4 Dojo和Node.js 一校完成 
