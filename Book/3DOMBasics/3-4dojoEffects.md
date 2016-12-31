@@ -1,4 +1,4 @@
-# 3.4 Dojo特效
+# 3.5 Dojo特效
 
 原文地址：https://dojotoolkit.org/documentation/tutorials/1.10/effects/index.html
 GitBook地址：https://www.gitbook.com/book/limeng1900/dojo1-11-tutorials-translation-in-chinese/details 

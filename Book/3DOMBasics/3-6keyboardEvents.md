@@ -1,4 +1,4 @@
-# 3.6键盘事件
+# 3.4 Dojo键盘事件
 原文地址：https://dojotoolkit.org/documentation/tutorials/1.10/key_events/index.html
 
 ----------

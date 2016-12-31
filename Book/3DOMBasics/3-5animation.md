@@ -1,4 +1,4 @@
-# 3.5动画
+# 3.6动画
 
 原文地址：https://dojotoolkit.org/documentation/tutorials/1.10/animation/index.html
 
