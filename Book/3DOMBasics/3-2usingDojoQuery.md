@@ -1,4 +1,4 @@
-# 3.2使用dojo/query
+# 3.2 使用dojo/query
 
 原文地址：https://dojotoolkit.org/documentation/tutorials/1.10/using_query/index.html
 
