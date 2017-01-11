@@ -1,12 +1,15 @@
 # 3.7 NodeList扩展
+
 原文地址：https://dojotoolkit.org/documentation/tutorials/1.10/nodelist_extensions/index.html
+
 ----------
 
-对于`dojo/query`使用的`NodeList`集合Dojo有一系列的扩展。本教程中，我们来看看有什么可用的拓展功能和如何加以利用。
+对于`dojo/query`使用的`NodeList`集合Dojo有一系列的扩展。本教程中，我们来看看有什么可用的拓展功能以及如何利用它们。
 
 ##入门
 在前面[`dojo/query`](https://dojotoolkit.org/reference-guide/1.10/dojo/query.html)的教程中，我们已经看到如何得到一个匹配查询或选择器的节点集合，还有如何使用[`dojo/NodeList`](https://dojotoolkit.org/reference-guide/1.10/dojo/NodeList.html)的方法来使用这些节点。先让我们快速回顾一下。下面是将要用到的标签：
-`dojo/NodeList`对象不同于DOM的[`NodeList`](https://developer.mozilla.org/en-US/docs/DOM/NodeList)对象。Dojo的`NodeList`是带有额外方法的数组的一个实例。ES5迭代方法确保甚至可以用在非ES5环境里，本教程中你将看到有各种模块可以扩展`dojo/NodeList`，给它增加很多有用的方法。
+
+`dojo/NodeList`对象不同于DOM的[`NodeList`](https://developer.mozilla.org/en-US/docs/DOM/NodeList)对象。Dojo的`NodeList`是带有额外方法的数组的一个实例。ES5迭代方法即使是在非ES5环境里也保证可以，本教程中你将看到有各种模块可以扩展`dojo/NodeList`，给它增加很多有用的方法。
 
 ```
 <button type="button" id="btn">Pick out fresh fruits</button>
@@ -59,7 +62,7 @@ require(["dojo/query", "dojo/domReady!"], function(query){
 “获得一些节点然后对它们做一些事”的模式非常普遍，`NodeList`的很多潜在特性解决了Dojo的模块化性质和“可组合”的功能之间的冲突。因此，在Dojo和DojoX中，有很多的NodeList扩展模块可以加载来给它添加新功能。让我们看一看。
 
 ##关于文档
-在API viewer中展示了[NodeList](https://dojotoolkit.org/api/1.10/dojo/NodeList.html)对象的声明在Dojo和DojoX的扩展模块的全部扩展方法。尽管资源模块是可以识别的，但是它更加“复杂”。另外扩展这个对象的个人模块本质上是一片空白。在参考指南里，每个模块都有它自己的页面（例如：[`dojo/NodeList-data`](https://dojotoolkit.org/reference-guide/1.10/dojo/NodeList-data.html)页面），如此各个模块提供什么方法就很清楚。
+在API viewer中展示了[NodeList](https://dojotoolkit.org/api/1.10/dojo/NodeList.html)对象的声明在Dojo和DojoX的扩展模块的全部扩展方法。尽管源模块是可以识别的，但是它更加“复杂”。另外扩展这个对象的个人模块本质上是一片空白。在参考指南里，每个模块都有它自己的页面（例如：[`dojo/NodeList-data`](https://dojotoolkit.org/reference-guide/1.10/dojo/NodeList-data.html)页面），如此各个模块提供什么方法就很清楚。
 
 ##操作样式和DOM
 Dojo1.7之前，基础`NodeList`具备一些DOM方法，例如`addClass`、`removeClass`、`attr`、`style`、`empty` 和 `place`。随着AMD和Dojo 1.7+的出现，这些方法移到了[`dojo/NodeList-dom`](https://dojotoolkit.org/reference-guide/1.10/dojo/NodeList-dom.html)。这里有一个关于你如何使用这个模块的示例：
@@ -75,11 +78,12 @@ require(["dojo/query", "dojo/NodeList-dom"], function(query){
         });
 });
 ```
-简单的加载`dojo/NodeList-dom`模块可以将这些方法添加到`NodeList`。它们的使用跟`dojo/dom`和相关模块一样。
+简单地加载`dojo/NodeList-dom`模块可以将这些方法添加到`NodeList`。它们的使用跟`dojo/dom`和相关模块一样。
 
 ##动画元素
 [`dojo/NodeList-fx`](https://dojotoolkit.org/reference-guide/1.10/dojo/NodeList-fx.html)模块参数`NodeList`带有一系列的方法可以用来将Dojo的特效系统应用到节点集合中。这些方法和非NodeList的方法对应，如果你不熟悉的话先看看 [Dojo Effects](https://dojotoolkit.org/documentation/tutorials/1.10/effects/) 和 [Animation](https://dojotoolkit.org/documentation/tutorials/1.10/animation/) 教程。
-在这个例子中，我们将使用之前的list和点击时执行以下代码的一个按钮：
+
+在这个例子中，我们将使用之前的list和一个按钮，在点击该按钮时执行以下代码：
 ```
 require(["dojo/query", "dojo/NodeList-fx", "dojo/domReady!"], function(query){
     query("#btn").on("click", function(){
@@ -96,22 +100,22 @@ require(["dojo/query", "dojo/NodeList-fx", "dojo/domReady!"], function(query){
     });
 });
 ```
-> [View Demo](https://dojotoolkit.org/documentation/tutorials/1.10/nodelist_extensions/demo/nodelist_extensions-fx.html)
+> [View Demo]6(https://dojotoolkit.org/documentation/tutorials/1.10/nodelist_extensions/demo/nodelist_extensions-fx.html)
 
 不像大多数的`Nodelist`方法，`NodeList-fx`方法默认返回一个动画对象，和常见的`Nodelist`的链式行为相矛盾。这是因为Dojo的动画函数通常返回一个动画对象，需要你对用对象的`play`方法来启动动画。在传递给函数的对象里设置`auto: true`可以使`NodeList-fx`的方法自动播放并且返回一个`Nodelist`，例如上面`slideTo`的调用。
 
-##联合元素与数据
+##数据与元素的结合
 [`dojo/NodeList-data`](https://dojotoolkit.org/reference-guide/1.10/dojo/NodeList-data.html)模块通过`data`方法增加了一个可以将任意数据附加到元素的机制。这有一个例子，在每次点击元素时将一个`Data`对象存储到元素上。
 ```
 require(["dojo/query", "dojo/NodeList-data", "dojo/domReady!"], function(query, NodeList){
     function mark(){
-        var nodeList = new NodeList(this);        // make a new NodeList from the clicked element
-        nodeList.data("updated", new Date());    // update the 'updated' key for this element via the NodeList
+        var nodeList = new NodeList(this);        // 从点击的元素创建一个新的 NodeList
+        nodeList.data("updated", new Date());    // 通过NodeList为这个元素更新'updated' 键
     }
 
-    query("li")                            // get all list items
-        .data("updated", new Date())    // set the initial data for each matching element
-        .on("click", mark);                // add the event handler
+    query("li")                            // 获取所有的list项
+        .data("updated", new Date())    // 为每一个匹配的元素设置初始data
+        .on("click", mark);                // 添加时间处理器
 
     query("#btn").on("click", function(){
         query("li").data("updated").forEach(function(date){
@@ -140,15 +144,19 @@ require(["dojo/query", "dojo/NodeList-data", "dojo/domReady!"], function(query, 
 ```
 require(["dojo/query", "dojo/NodeList-traverse", "dojo/NodeList-dom",
         "dojo/domReady!"], function(query){
-    query("li.yum")                // get LI elements with the class 'yum'
-        .addClass("highlight")    // add a 'highlight' class to those LI elements
-        .closest(".fruitList")    // find the closest parent elements of those LIs with the class 'fruitList'
-        .prev()                    // get the previous sibling (headings in this case) of each of those fruitList elements
-        .addClass("happy")        // add a 'happy' class to those headings
-        .style({backgroundPosition: "left", paddingLeft: "20px"}); // add some style properties to those headings
+    query("li.yum")                // 获取'yum'类的LI元素
+        .addClass("highlight")    // 给这些LI元素添加一个'highlight' class
+        .closest(".fruitList")    // 找到这些LI最近的'fruitList'类的父元素
+        .prev()                    // 获取这些fruitList元素中每一个的前一个兄弟元素（这里的标题）
+        .addClass("happy")        // 为这些标题添加一个'happy'类
+        .style({backgroundPosition: "left", paddingLeft: "20px"}); // 为这些标题添加一些样式属性
 });
 ```
 > [View Demo](https://dojotoolkit.org/documentation/tutorials/1.10/nodelist_extensions/demo/nodelist_extensions-traverse.html)
+
+
+
+
 
 这个示例的关键是使用`clone`方法创建原始元素的副本。通过`NodeList-traverse`方法，`clone`返回一个新的NodeList包括所有新克隆的元素，这些元素随后修改和追加到DOM。如果没有创建这个副本，原始的元素会修改并移进来。
 
