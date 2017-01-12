@@ -154,11 +154,32 @@ require(["dojo/query", "dojo/NodeList-traverse", "dojo/NodeList-dom",
 ```
 > [View Demo](https://dojotoolkit.org/documentation/tutorials/1.10/nodelist_extensions/demo/nodelist_extensions-traverse.html)
 
+操作链从一个查找兴趣list节点的初始化查询开始，然后使用遍历方法向上面和侧面移动，从而找到与包含这些列表节点的列表相关的标题元素。
 
+理解遍历方法的重点是每一次调用返回一个**新的**NodeList，新的NodeList包含你遍历的结果。`closest()`、`prev()`和`next()`这样的方法本质上是子查询，使用当前NodeList中的节点作为下一次子查询的引用。大多数这些方法等同于jQuery中的方法，对于用过这个库的用户来说会比较熟悉。
 
+##操作元素
 
+`dojo/NodeList-manipulate`扩展模块通过在`NodeList`里添加一些操作节点的方法补充了遍历模块。这个模块添加的方法等同jQuery的操作方法。
 
-这个示例的关键是使用`clone`方法创建原始元素的副本。通过`NodeList-traverse`方法，`clone`返回一个新的NodeList包括所有新克隆的元素，这些元素随后修改和追加到DOM。如果没有创建这个副本，原始的元素会修改并移进来。
+下面的例子使用其中的一些功能。使用同样的水果分类列表，它创建两个新的列表，分别是美味和恶心的水果：
+```
+require(["dojo/query", "dojo/NodeList-manipulate", "dojo/domReady!"],
+function(query){
+    query(".yum") // 获取'yum'类的元素
+        .clone() // 创建一个新的NodeList，它包含克隆的每一个元素的副本
+        .prepend('<span class="emoticon happy"></span>') // 在每一个克隆的元素里注入一个span
+        .appendTo("#likes"); // 将克隆项插入到id为'like'的元素里
+
+    query(".yuck")
+        .clone()
+        .append('<span class="emoticon sad"></span>')
+        .appendTo("#dontLikes");
+});
+```
+>[View Demo](https://dojotoolkit.org/documentation/tutorials/1.10/nodelist_extensions/demo/nodelist_extensions-manip.html)
+
+这个示例的关键是使用`clone`方法创建原始元素的副本。通过`NodeList-traverse`方法，`clone`返回一个新的NodeList包括所有新克隆的元素，这些元素随后修改和追加到DOM。如果没有创建这个副本，原始的元素会被修改并移进来。
 
 ##内容注入进阶
 `[dojo/NodeList-html](https://dojotoolkit.org/reference-guide/1.10/dojo/NodeList-html.html)`模块给`NodeList`带来了`[dojo/html::set()](https://dojotoolkit.org/reference-guide/1.10/dojo/html.html)`的高级功能。这里有一个简单的例子，它用`dijit/form/CheckBox`把一个简单的列表转变成一个复选框列表：
