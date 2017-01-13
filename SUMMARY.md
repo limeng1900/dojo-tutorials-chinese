@@ -33,6 +33,6 @@
     * [4.10用hitch和partial生成函数](Book/4Fundamentals/4-10hitchAndPartial.md)
     * [4.11JSONP和dojo\/request](Book/4Fundamentals/4-11jsonp.md)
     * [4.12Dojo Deferreds 和 Promises](Book/4Fundamentals/4-12promises.md)
-* [5 widgets](5-widgets.md)
+* [5 Widgets](5-widgets.md)
     * [5.1 超越Dojo](Book/5Widgets/5-1BeyondDojo.md)
 
