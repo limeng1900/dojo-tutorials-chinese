@@ -35,4 +35,5 @@
     * [4.12Dojo Deferreds 和 Promises](Book/4Fundamentals/4-12promises.md)
 * [5 Widgets](5-widgets.md)
     * [5.1 超越Dojo](Book/5Widgets/5-1BeyondDojo.md)
+    * [5.2 图表](Book/5Widgets/5-2Charting.md)
 
