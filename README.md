@@ -1,5 +1,7 @@
 # Dojo 1.11官方教程翻译
 
+[![Join the chat at https://gitter.im/dojo-tutorials-chinese/Lobby](https://badges.gitter.im/dojo-tutorials-chinese/Lobby.svg)](https://gitter.im/dojo-tutorials-chinese/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 ##简介
 原教程地址：https://dojotoolkit.org/documentation/
 本书为官方教程的中文翻译版本，翻译工作始于2016年11月5日，第一版翻译预计耗时7个月，初版只进行简单校对，计划于初版完成后进行精校。
