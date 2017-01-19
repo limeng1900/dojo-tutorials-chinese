@@ -36,5 +36,6 @@
 * [5 Widgets](5-widgets.md)
     * [5.1 超越Dojo](Book/5Widgets/5-1BeyondDojo.md)
     * [5.2 图表](Book/5Widgets/5-2Charting.md)
-    * [5.3图表进阶](Book/5Widgets/5-3ChartingAdvanced.md)
+    * [5.3 图表进阶](Book/5Widgets/5-3ChartingAdvanced.md)
+    * [5.4 复选框](Book/5Widgets/5-4CheckBox.md)
 
