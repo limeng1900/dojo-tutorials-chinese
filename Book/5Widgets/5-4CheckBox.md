@@ -35,4 +35,8 @@ require(["dijit/form/CheckBox"], function(CheckBox) {
 
 点击标签和输入框都可以让它在已选和未选之间切换。你也可以使用tab键来通过键盘控制导航，用空格键控制选中/未选元素，就和原生控制一样。通过引用相应的CheckBox widget的ID，HTML标签也能和原生表单一样工作。
 
-Dojo1.6引入的一个新特性是使用HTML5 `data-dojo-type`属性来代替`dojoType`属性。在Dojo1.6中，`data-dojo-type`阻止Dojo从标准HTML属性中获取值，也就是说你需要
+Dojo1.6引入的一个新特性是使用HTML5 `data-dojo-type`属性来代替`dojoType`属性。在Dojo1.6中，`data-dojo-type`会阻止Dojo从标准HTML属性中获取值，也就是说如果你需要使用该属性，你就要将正常HTML属性值（`checked`，`disabled`等）复制到 `data-dojo-type`中。这个问题在Dojo1.7中得到了解决。
+
+##复选框的值
+
+所有的Dijit表单widget都有存取器方法来获得和更新widget的值（`<var>widget</var>.get("value")` 和 `<var>widget</var>.set("value")`）。记着对于原生复选框，一个复选框的值如果是checked只能发送给服务器。Dijit的CheckBox相似：如果它是选中状态，`<var>widget</var>.get("value")`将返回widget的值属性。
