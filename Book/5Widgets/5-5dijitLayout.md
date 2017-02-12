@@ -243,3 +243,7 @@ Dijit也提供一个易用的`dijit/layout/AccordionContainer`，在`dojox/layou
 当编程式创建widget是，我们需要通过调用`startup`方法完成序列。这一步包括一旦widget放在DOM时任何值发生一次的事——它包含测量和定型。布局widget将在它们的子集中调用`startup`，这样他就可以从最顶端的widget往下滚。
 
 通过
+
+
+
+
