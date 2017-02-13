@@ -1,3 +1,5 @@
+5.6 Dijit布局
+
 原文地址：https://dojotoolkit.org/documentation/tutorials/1.10/dijit_layout/index.html
 
 ---
