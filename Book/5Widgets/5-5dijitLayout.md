@@ -242,7 +242,102 @@ Dijit也提供一个易用的`dijit/layout/AccordionContainer`，在`dojox/layou
 
 当编程式创建widget是，我们需要通过调用`startup`方法完成序列。这一步包括一旦widget放在DOM时任何值发生一次的事——它包含测量和定型。布局widget将在它们的子集中调用`startup`，这样他就可以从最顶端的widget往下滚。
 
-通过
+按照定义，所有的布局widget有一个`resize`方法。这个方法在启动期间调用，在发生需要调整尺寸的变化时或者添加一个新的子widget时也会调用。类似`startup`，`resize`也会向下传递，让布局中的每个widget调整，并向它的子集传递新的尺寸。
+
+记住这些，我们来看一些代码。下面是基础框架：
+
+```
+<head>
+    <script src="//ajax.googleapis.com/ajax/libs/dojo/1.10.4/dojo/dojo.js"
+        data-dojo-config="async:1">
+    </script>
+    <script>
+    require(["dijit/registry", "dijit/layout/BorderContainer",
+            "dijit/layout/TabContainer", "dijit/layout/ContentPane", "dojo/domReady!"],
+        function(registry, BorderContainer, TabContainer, ContentPane){
+            // create the main appLayout BorderContainer
+            // create the TabContainer
+            // create the BorderContainer edge regions
+        });
+    </script>
+</head>
+<body class="claro">
+    <div id="appLayout" class="demoLayout"></div>
+</body>
+```
+
+这里我们已经忽略了`parseOnLoad`，它默认为false；作为代替，我们使用`dojo/domReady!`来等待DOM加载。
+
+```
+// 创建 BorderContainer 并将它附到 appLayout div
+var appLayout = new BorderContainer({
+    design: "headline"
+}, "appLayout");
+
+// 创建 TabContainer
+var contentTabs = new TabContainer({
+    region: "center",
+    id: "contentTabs",
+    tabPosition: "bottom",
+    "class": "centerPanel"
+});
+
+// 将 TabContainer 作为 BorderContainer 的一个子widget
+appLayout.addChild( contentTabs );
+
+// 创建并添加 BorderContainer 边缘区域
+appLayout.addChild(
+    new ContentPane({
+        region: "top",
+        "class": "edgePanel",
+        content: "Header content (top)"
+    })
+);
+appLayout.addChild(
+    new ContentPane({
+        region: "left",
+        id: "leftCol", "class": "edgePanel",
+        content: "Sidebar content (left)",
+        splitter: true
+    })
+);
+
+// 给 TabContainer 添加初始化内容
+contentTabs.addChild(
+    new ContentPane({
+        href: "contentGroup1.html",
+        title: "Group 1"
+    })
+);
+
+// 启动并布局
+appLayout.startup();
+```
+
+>[View Demo](https://dojotoolkit.org/documentation/tutorials/1.10/dijit_layout/demo/programmaticLayout.html)
+
+每一个widget都是用我们之前定义的`data-dojo-props`属性的等价属性实例化的。不同于标签的隐式包含，每个widget都显示地通过使用`addChild`方法添加给父级。
+
+注意当所有的widget都添加后，调用appLayout 的 startup方法。在startup之前，`addChild`只是简单地widget注册为一个子元素。在startup之后，`addChild`可能代表一个布局变化，所以它将触发父级和其它全部子集的`resize`。
+
+我们可以通过在布局渲染完成后添加一个新的子元素来了解它。下面是它的一个快速功能测试：
+
+```
+function addTab(name) {
+    var pane = new ContentPane({
+        title: name,
+        content: "<h4>" + name + "</h4>"
+    });
+    // add the new pane to our contentTabs widget
+    registry.byId("contentTabs").addChild(pane);
+}
+```
+
+>[View Demo](https://dojotoolkit.org/documentation/tutorials/1.10/dijit_layout/demo/addTabs.html)
+
+##小结
+
+我们已经看过了Dijit为创建动态布局提供的模块，以及如何使用声明式标签风格进行组合和使用编程式来创建。这个方式可以让你全方位的选择如何定义和装配你的UI。在我们更多探索Dijit你也将发现同样的灵活性。还可以通过在Dijit提供的基础上创建自己的布局widget来丰富我们的选择。这将是未来的教程主题。
 
 
 
