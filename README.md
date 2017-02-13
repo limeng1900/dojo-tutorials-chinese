@@ -8,6 +8,8 @@ Dojo新手，翻译错误和不到位的地方还请多多指正，同时也欢�
 
 联系邮箱：limeng1900@qq.com 
 
+**[2017/02/13]** 过年期间工作量较少，widget部分应用的内容翻译了6篇其它不打算再译。该部分再翻译个 Understanding _WidgetBase tutorial和Creating Template-based Widgets以及额外的一篇 Creating a custom widget tutorial就收尾。Mobile和dojox/app两大部分也不打算翻译，还剩一个Working with Data部分，希望在3月底结束全部初译工作。
+
 **[2017/01/12]** 1-3章第一遍校对完成，后面校对和翻译同时进行，放了寒假也快过年了进度会放缓。
 
 **[2016/12/21]** Dojo基础部分第一遍粗译已经完工。想先提高下基础部分的可读性，打算将校对提前，需要优化的部分挺多，后面的翻译工作暂缓。
