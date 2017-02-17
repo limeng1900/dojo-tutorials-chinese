@@ -42,4 +42,5 @@
   * [5.6 Dijit布局](Book/5Widgets/5.5-dijit.md)
   * [5.7 其他内容](Book/5Widgets/5-7others.md)
   * [5.8 理解\_WidgetBase](Book/5Widgets/5-8Understanding_WidgetBase.md)
+  * [5.9 创建基于模板的widget](Book/5Widgets/5-9templated.md)
 
