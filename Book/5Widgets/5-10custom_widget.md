@@ -42,7 +42,7 @@ ___
 
 我们还希望它能有一些技巧——或许在鼠标移入时改变背景色。最后，我们想要它看起来是这样的：
 
-![这里写图片描述](http://img.blog.csdn.net/20170218115510229?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdGFpamllZGkxMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+![](/assets/widget_final.png)
 
 ##解决方案
 
@@ -58,7 +58,7 @@ ___
 
 这一步其实是可选的，不过通常认为给你的自定义Dijit工作（或广义上的自定义代码）建立一个合适的文件结构是种很好的实践。在这个例子中，“myApp”是我们所有“自定义”代码的总文件夹——这里“自定义”是为这个app写的特定代码。通用的和第三方库（如dojo、dijit等）会放在“myApp”的兄弟文件夹中。它的名称完全由你决定，但是让名称富有意义，比如你的组织的名称或者widget所属的应用。我们想要将widget组织起来，所以将在“myApp”下创建一个“widget”文件。我们将调用我没的新widget AuthorWidget——它的模块id是`myApp/widget/AuthorWidget`。widget常常会使用外部资源，所以我们将在“widget”文件夹下添加一些文件夹来组织它们—— css、imagets和templates。我们最后的文件结构如下：
 
-![这里写图片描述](http://img.blog.csdn.net/20170218145126046?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdGFpamllZGkxMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+![](/assets/filestructure.png)
 
 我们还没有实际地在自定义控件创建任何文件——现在只是一些层次结构。
 
@@ -107,7 +107,7 @@ ___
 
 这里在我们上面的文件结构中，我们将要在`widget`文件夹中创建一个名叫`AouthorWidget.js`的文件。我们还将添加一个默认的头像图片。文件结构开始被填充起来。之后，它将更加丰满。我们会在这里做大量的工作。
 
-![这里写图片描述](http://img.blog.csdn.net/20170219212639836?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdGFpamllZGkxMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+![](/assets/filestructure2.png)
 
 现在我们可以简单地构建我们widget。把下面代码放在你的`AuthorWidget.js`文件中。
 
@@ -269,7 +269,7 @@ require(["dojo/request", "dojo/dom", "dojo/_base/array", "myApp/widget/AuthorWid
 
 有了所有这些，我们就有了可以运行的！不过，如你所见它还不够漂亮。
 
-![这里写图片描述](http://img.blog.csdn.net/20170221154834242?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdGFpamllZGkxMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+![](/assets/widget_final.png)
 
 >[View Demo](https://dojotoolkit.org/documentation/tutorials/1.10/recipes/custom_widget/demo/unstyled.html)
 
