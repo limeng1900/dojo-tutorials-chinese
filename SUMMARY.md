@@ -1,7 +1,7 @@
 # Summary
 
 * [Introduction](README.md)
-  * [log](log.md)
+* [log](log.md)
 * [1 入门](Book/1GettingStarted/1GettingStarted.md)
   * [1.1 开启Dojo之旅](Book/1GettingStarted/1-4dojostart.md)
   * [1.2 Hello Dojo](Book/1GettingStarted/1-1hellodojo.md)
@@ -44,4 +44,6 @@
   * [5.8 理解\_WidgetBase](Book/5Widgets/5-8Understanding_WidgetBase.md)
   * [5.9 创建基于模板的widget](Book/5Widgets/5-9templated.md)
   * [5.10 创建自定义widget](Book/5Widgets/5-10custom_widget.md)
+* [6 使用数据](Book/6WorkWithData/6.md)
+  * [6.1 创建Store](Book/6WorkWithData/6-1creating_stores.md)
 
