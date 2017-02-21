@@ -43,4 +43,5 @@
   * [5.7 其他内容](Book/5Widgets/5-7others.md)
   * [5.8 理解\_WidgetBase](Book/5Widgets/5-8Understanding_WidgetBase.md)
   * [5.9 创建基于模板的widget](Book/5Widgets/5-9templated.md)
+  * [5.10 创建一个自定义widget](Book/5Widgets/5-10custom_widget.md)
 
