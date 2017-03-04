@@ -1,17 +1,18 @@
-# 6.1 创建Store
+# 6.2 创建Store
 
-原文地址：[https://dojotoolkit.org/documentation/tutorials/1.10/creating\\_stores/index.html](https://dojotoolkit.org/documentation/tutorials/1.10/creating\_stores/index.html)
+原文地址：[https://dojotoolkit.org/documentation/tutorials/1.10/creating\\_stores/index.html](https://dojotoolkit.org/documentation/tutorials/1.10/creating_stores/index.html)
 
 ---
 
 在这篇教程中，你将了解所有`dojo/store`遵循的基础API以及如何创建你自己的store——包括如何处理查询结果。
 
-##入门
-新的[`dojo/store`](https://dojotoolkit.org/reference-guide/1.10/dojo/store.html)是用来代替旧的`dojo.data`系统的；它部分基于新的 [W3C Object Store API](http://www.w3.org/TR/IndexedDB/#object-store)，希望能够让创建数据存储组件变得尽可能简单。以`dojo/store`创建store非常简单，因为大多数方法都是可选的，只要在你需要的时候应用它。这篇教程将帮助你入门，并告诉你新的Dojo Stores里那些是最重要的部分。
+## 入门
+
+新的[`dojo/store`](https://dojotoolkit.org/reference-guide/1.10/dojo/store.html\)是用来代替旧的`dojo.data`系统的；它部分基于新的 [W3C Object Store API]\(http://www.w3.org/TR/IndexedDB/#object-store)，希望能够让创建数据存储组件变得尽可能简单。以`dojo/store`创建store非常简单，因为大多数方法都是可选的，只要在你需要的时候应用它。这篇教程将帮助你入门，并告诉你新的Dojo Stores里那些是最重要的部分。
 
 基础的Dojo Store只实现了部分的 IndexedDB API，这些方法主要集中在数据存取上。IndexedDB API的某些方面（比如索引和指针）并没有实现，主要因为他们在纯JavaScript环境下不是必须的。
 
-##创建第一个store
+## 创建第一个store
 
 在创建你的store实现之前，最好看一看Dojo工具集中最简单的store—— [Memory store](https://dojotoolkit.org/api/?qs=1.10/dojo/store/Memory)，它用来处理最原始的数据管理任务。下面是`dojo/store/Memory`的基础API：
 
@@ -42,7 +43,7 @@ define(["../_base/declare", "dojo/store/util/SimpleQueryEngine"],
 
 你可能注意到没有工具来发送通知时间，例如当数据创建、删除或更新时。我们会在另一个教程中讨论如何对已存在的Dojo Store应用`dojo/store/Observable`。
 
-##内部数据结构
+## 内部数据结构
 
 大家可能都用过一些JavaScript数据结构，你可能注意到store没有规定一组对象的实际数据结构。这是经过`dojo/store`深思熟虑的，由于你数据的结构通常取决于数据的应用，store不需要决定它的结构。
 
@@ -50,7 +51,7 @@ define(["../_base/declare", "dojo/store/util/SimpleQueryEngine"],
 
 你可以不用**idProperty**来编写一个store处理数据，但是我们强烈反对你这么做。没有唯一标识的store每次都要查找你的数据结构中的全部元素，这是性能上的浪费。
 
-##query：Store中最重要的方法
+## query：Store中最重要的方法
 
 目前，store中最重要的方法是`query`方法。它是不改变内部数据结构来获取store信息的主要方式。这个方法接收两个参数：一个`query`对象和一个可选的`options`对象。
 
@@ -90,7 +91,7 @@ var myEngine = function(query, options){
 
 这里正是有意思的地方，你传递给`QueryResults`的`results`对象既可以是一个数组也可以是一个promise。没错，你可以给QueryResults函数传递一个[promise对象](https://dojotoolkit.org/documentation/tutorials/1.10/promises/)，而且迭代方法仍然能用。
 
-让我们分别看一看在Memory store和JsonRest store这两种store中的`query`方法。首先，
+让我们分别看一看在Memory store和JsonRest store这两种store中的`query`方法。首先，  
 Memory store：
 
 ```
@@ -158,7 +159,7 @@ query: function(query, options){
 
 你会注意到 JsonRest 并没有是用查询引擎，它是用`dojo/request`调用一个REST服务，该服务返回一个promise。随后QueryResults 确保返回的promise可以使用常用的迭代方法，并且让这些方法以正确的方式运行。
 
-`QueryResults `使用了[`dojo.when`](https://dojotoolkit.org/documentation/tutorials/1.10/promises/)，这里我们不多说。只要记得当你编写自己的store时，你应该总是确保`query`函数返回一个`dojo/store/util/QueryResults`包裹的对象。
+`QueryResults`使用了[`dojo.when`](https://dojotoolkit.org/documentation/tutorials/1.10/promises/)，这里我们不多说。只要记得当你编写自己的store时，你应该总是确保`query`函数返回一个`dojo/store/util/QueryResults`包裹的对象。
 
 ## 我们来创建一个store
 
@@ -336,8 +337,9 @@ define(["dojo/store/util/QueryResults", "dojo/_base/declare", "dojo/store/util/S
 
 如你所见，使用新的Dojo Store API创建一个基本的store既简单又直接。
 
-##小结
+## 小结
 
 在这篇教程中，我们已经了解了新的Dojo Store API 背后的历史和基础，以及如何创建我们自己的store，还有Dojo Store API 的两块核心——查询引擎和`dojo/store/util/QueryResults`如何作用。我们鼓励你在Dojo 工具集中（`dojo/store`中）探索store，你也会在DojoX（`dojox/store`中）中发现一些另外的store。
 
 下一步：使用`dojo/store/Observable`和一些store来处理通知事件，还有[使用 Dojo Store API 处理实时数据](https://dojotoolkit.org/documentation/tutorials/1.10/realtime_stores)。
+
