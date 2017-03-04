@@ -44,8 +44,8 @@
   * [5.8 理解\_WidgetBase](Book/5Widgets/5-8Understanding_WidgetBase.md)
   * [5.9 创建基于模板的widget](Book/5Widgets/5-9templated.md)
   * [5.10 创建自定义widget](Book/5Widgets/5-10custom_widget.md)
-* [6 使用数据](Book/6WorkWithData/6.md)
+* [6 与数据共舞](Book/6WorkWithData/6.md)
   * [6.1 Dojo Object Store](Book/6WorkWithData/6-1intro_dojo_store.md)
   * [6.2 创建Store](Book/6WorkWithData/6-2creating_stores.md)
-  * [6.2 MVC应用的数据模型](Book/6WorkWithData/6-3datamodeling.md)
+  * [6.3 MVC应用的数据模型](Book/6WorkWithData/6-3datamodeling.md)
 
