@@ -46,4 +46,5 @@
   * [5.10 创建自定义widget](Book/5Widgets/5-10custom_widget.md)
 * [6 使用数据](Book/6WorkWithData/6.md)
   * [6.1 创建Store](Book/6WorkWithData/6-1creating_stores.md)
+  * [6.2 MVC应用的数据模型](Book/6WorkWithData/6-2datamodeling.md)
 
