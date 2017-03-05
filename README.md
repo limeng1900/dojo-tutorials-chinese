@@ -10,7 +10,7 @@
 
 ### 译者
 
-* 李梦   Email： limeng1900@qq.com
+* 李梦    limeng1900@qq.com
 
 
 
