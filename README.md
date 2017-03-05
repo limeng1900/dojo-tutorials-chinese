@@ -4,12 +4,9 @@
 
 本教程为Dojo官方教程的中文翻译，该教程自Dojo 1.10版本后一直沿用，因Dojo2已经在筹备，1.x版本应该不会出现基础上的更改，目测本教程将做为1.x版本的最终入门教程。
 
-**原教程地址：**[**https://dojotoolkit.org/documentation/**](https://dojotoolkit.org/documentation/)  
-
+**原教程地址：**[**https://dojotoolkit.org/documentation/**](https://dojotoolkit.org/documentation/)
 
 翻译工作始于2016年11月5日，第一版于2017年3月5日结束，其中已经对1-3章做了校对，另外翻译过程中还对一些过时的内容做了删减。翻译错误和不到位的地方还请多多指正，同时也欢迎参与校对工作~~
-
-
 
 ### 译者
 
