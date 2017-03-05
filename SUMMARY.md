@@ -1,7 +1,6 @@
 # Summary
 
 * [Introduction](README.md)
-* [log](log.md)
 * [1 入门](Book/1GettingStarted/1GettingStarted.md)
   * [1.1 开启Dojo之旅](Book/1GettingStarted/1-4dojostart.md)
   * [1.2 Hello Dojo](Book/1GettingStarted/1-1hellodojo.md)
@@ -49,4 +48,5 @@
   * [6.2 创建Store](Book/6WorkWithData/6-2creating_stores.md)
   * [6.3 MVC应用的数据模型](Book/6WorkWithData/6-3datamodeling.md)
   * [6.4 实时Store](Book/6WorkWithData/6-4realtime_stores.md)
+* [log](log.md)
 
