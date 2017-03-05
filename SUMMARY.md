@@ -48,4 +48,5 @@
   * [6.1 Dojo Object Store](Book/6WorkWithData/6-1intro_dojo_store.md)
   * [6.2 创建Store](Book/6WorkWithData/6-2creating_stores.md)
   * [6.3 MVC应用的数据模型](Book/6WorkWithData/6-3datamodeling.md)
+  * [6.4 实时Store](Book/6WorkWithData/6-4realtime_stores.md)
 
